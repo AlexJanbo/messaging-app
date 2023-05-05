@@ -1,4 +1,5 @@
-const { UserRepository } = require("../database");
+const { GenerateHashedPassword, ValidatePassword, GenerateSignedJWT } = require('../../utils/index')
+const { CreateUser, EmailInUse, FindUserByEmail, UsernameInUse, FindUserById } = require('../../database/repository/user-repository')
 // Goals:
 // Try to include business logic only
 // No database operations and try to use reusable functions
@@ -10,28 +11,26 @@ const { UserRepository } = require("../database");
 const RegisterUser = async (req, res) => {
     try {
         const { username, email, password  } = req.body
-        const userRepository = new UserRepository()
 
         if(!username || !email || !password) {
             res.status(400)
-            throw new Error("Please fill in all")
+            throw new Error("Please fill in all fields")
         }
-        if(userRepository.EmailInUse(email)) {
+        if(await EmailInUse(email)) {
             res.status(400)
             throw new Error("Email already in use")
         }
         
-        if(userRepository.UsernameInUse(username)) {
+        if(await UsernameInUse(username)) {
             res.status(400)
             throw new Error("Email already in use")
         }
         
-        const hashedPassword = GenerateHashedPassword(password)
-        
-        const user =  await UserRepository.CreateUser({ username, email, hashedPassword })
+        const hashedPassword = await GenerateHashedPassword(password)
+        const user =  await CreateUser(username, email, hashedPassword)
         
         if(user) {
-            res.status(201).json(FormatDataToObject(user))
+            res.status(201).json(user)
         } else {
             throw new Error("User not found")
         }
@@ -48,16 +47,18 @@ const RegisterUser = async (req, res) => {
 const LoginUser = async(req, res) => {
     try {
         const { email, password } = req.body
-        const userRepository = new UserRepository()        
 
-        const user = userRepository.FindUserByEmail(email)
+        if(!email || !password) {
+            res.status(400)
+            throw new Error("Please fill in all fields")
+        }
+        const foundUser = await FindUserByEmail(email)
 
-        if(user && (await ValidatePassword(password, user.password))) {
+        if(foundUser && (await ValidatePassword(password, foundUser.password))) {
             res.status(200).json({
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                token: GenerateSignedJWT(user._id)
+                username: foundUser.username,
+                email: foundUser.email,
+                token: GenerateSignedJWT(foundUser._id)
             })
         } else {
             throw new Error("Invalid login credentials")
@@ -84,4 +85,10 @@ const GetUserInformation = async(req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
+}
+
+module.exports = {
+    RegisterUser,
+    LoginUser,
+    GetUserInformation,
 }

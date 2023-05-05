@@ -10,7 +10,7 @@ module.exports = async() => {
             useUnifiedTopology: true,
         })
 
-        console.log("Database connectee dur successforrry".cyan)
+        console.log("MongoDB Successfully connected".cyan)
     } catch (error) {
         console.error("ERROR ======= ON DB CONNECTION")
         console.log(error)

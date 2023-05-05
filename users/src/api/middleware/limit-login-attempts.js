@@ -1,6 +1,6 @@
 const rateLimit = require('express-rate-limit')
 
-const loginAttemptLimiter = rateLimit({
+const LimitLoginAttempts = rateLimit({
     
     windowsMs: 60 * 1000, // 1 minute
     max: 10, // Limit each IP to 10 login requests per minute per window
@@ -12,4 +12,6 @@ const loginAttemptLimiter = rateLimit({
     legacyHeaders: false, // Disable X-RateLimit
 })
 
-module.exports = loginAttemptLimiter
+module.exports = {
+    LimitLoginAttempts   
+}

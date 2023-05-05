@@ -1,26 +1,49 @@
-const { UserModel } = require('../models')
-
+const User = require('../models/User')
 
 // All database logic 
-class UserRepository {
+const CreateUser = async(username, email, hashedPassowrd) => {
+   const user = await User.create({
+        username: username,
+        email: email,
+        password: hashedPassowrd,
+    })
+    return user
+}
 
-    async CreateUser({ username, email, password }) {
 
+const EmailInUse = async(email) => {
+    const existingUser = await User.findOne({ email: email})
+    if(existingUser) {
+        return true
+    } else {
+        return false
     }
+}
 
-    async FindUserByEmail({ email }) {
+const FindUserByEmail = async(email) => {
+    const foundUser = await User.findOne({ email: email})
+    return foundUser
+}
 
+const UsernameInUse = async({ username }) => {
+    const existingUser = await User.findOne({ username: username })
+    if(existingUser) {
+        return true
+    } else {
+        return false
     }
+}
 
-    async FindUserByUsername({ username }) {
-
-    }
-
-    async FindUserById({ userId }) {
-
-    }
-
+const FindUserById = async({ userId }) => {
+    const existingUser = await UserModel.findById( userId )
+    return existingUser
 
 }
 
-module.exports = UserRepository
+module.exports = {
+    CreateUser,
+    EmailInUse,
+    FindUserByEmail,
+    UsernameInUse,
+    FindUserById,
+}
