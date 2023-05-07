@@ -1,11 +1,13 @@
 const mongoose = require('mongoose')
 const request = require('supertest')
+
 require('dotenv').config
 
 const expressApp = require('../src/express-app')
 const User = require('../src/database/models/User')
 
 const { TEST_MONGODB_URI } = require('../src/config')
+const { CreateUser, EmailInUse, UsernameInUse, FindUserByEmail, FindUserById } = require('../src/database/repository/user-repository')
 console.log(TEST_MONGODB_URI)
 
 
@@ -21,7 +23,7 @@ describe('User model and database logic test', () => {
         await mongoose.connect(TEST_MONGODB_URI)
     }) 
 
-    afterEach(async () => {
+    beforeEach(async () => {
         await User.deleteMany({})
     })
 
@@ -33,9 +35,9 @@ describe('User model and database logic test', () => {
         expect(User).toBeDefined()
     })
 
-    describe('Save user', () => {
-        it("saves a user", async() => {
-            const user = await User.create(testUser)
+    describe('Test function CreateUser', () => {
+        it("Creates a user", async() => {
+            const user = await CreateUser(testUser.username, testUser.email, testUser.password)
 
             expect(user.username).toEqual("testUsername")
             expect(user.email).toEqual("test@gmail.com")
@@ -43,45 +45,79 @@ describe('User model and database logic test', () => {
         })
     })
 
-    describe("Get user", () => {
-        it("Gets a user", async () => {
-            const user = await User.create(testUser)
-            const id = user._id
-
-            const foundUser = await User.findOne({ _id: id})
-            
-            const expected = "testUsername"
-            const actual = foundUser.username
-            expect(actual).toEqual(expected)
+    describe('Test Function EmailInUse', () => {
+        it('Checks when email is not in use', async() => {
+            const email = testUser.email
+            expect(await EmailInUse(email)).toBeFalsy()
         })
-    })
-
-    describe("Update user", () => {
-        it("Updates a user", async () => {
-            const user = await User.create(testUser)
-            const id = user._id
-
-            await User.findByIdAndUpdate(id, {
-                username: "updatedTestUsername"
+        it('Checks when email is in use', async() => {
+            const user = await User.create({
+                username: testUser.username,
+                email: testUser.email,
+                password: testUser.password,
             })
-            const foundUser = await User.findById(id)
+            const email = user.email
+            expect(await EmailInUse(email)).toBeTruthy()
+        })
 
+    })
+    
 
-            const expected = "updatedTestUsername"
-            const actual = foundUser.username
-            expect(actual).toEqual(expected)
+    describe('Test Function UsernameInUse', () => {
+        it('Checks when username is not in use', async() => {
+            const username = testUser.username
+            expect(await UsernameInUse(username)).toBeFalsy
+        })
+        it('Checks when username is in use', async() => {
+            const user = await User.create({
+                username: testUser.username,
+                email: testUser.email,
+                password: testUser.password
+            })
+            const username = user.username
+            console.log(username)
+            expect(await UsernameInUse(username)).toBeTruthy() 
         })
     })
+        
 
-    describe("Delete user", () => {
-        it("Deletes a user", async () => {
-            const user = await User.create(testUser)
-            const id = user._id
-
-            await User.findByIdAndDelete(id)
-            const foundUser = await User.findById(id)
-
+    describe('Test Function FindUserByEmail', () => {
+        it('Checks when the email already exists', async() => {
+            const user = await User.create({
+                username: testUser.username,
+                email: testUser.email,
+                password: testUser.password
+            })
+            const email = user.email
+            const foundUser = await FindUserByEmail(email)
+            expect(foundUser).toMatchObject(user.toObject()) 
+        })
+        it('Checks when the email does not already exist', async() => {
+            const email = testUser.email
+            const foundUser = await FindUserByEmail(email)
             expect(foundUser).toBeNull()
         })
     })
-}) 
+
+    describe('Test Function FindUserById', () => {
+        it('Checks when the ID already exists', async() => {
+            const user = await User.create({
+                username: testUser.username,
+                email: testUser.email,
+                password: testUser.password
+            })
+            const userId = user._id
+            const foundUser = await FindUserById(userId)
+            expect(foundUser).toMatchObject(user.toObject())
+        })
+        it('Checks when the ID does not already exist', async() => {
+            const user = await User.create(testUser)
+            const userId = user._id
+            await User.deleteMany({})
+            const foundUser = await FindUserById(userId)
+            expect(foundUser).toBeNull()
+        })
+    })
+
+
+    })
