@@ -3,7 +3,6 @@ const { RegisterUser } = require('../src/api/controllers/user-controllers')
 
 const req = {
     body: {
-        username: "testUsername",
         email: "test@gmail.com",
         password: "testPassword"
     }
@@ -15,15 +14,15 @@ const res = {
 }
 
 // Test suite for user controller (business logic)
-describe('User controller and business logic test', () => {
+describe('User Controller', () => {
 
-    describe('Register User', () => {
-        it('Registers a user', async() => {
-            
+    describe('RegisterUser', () => {
+
+        it('Should throw an error if username is missing', async() => {
+
             const res = await RegisterUser(req)
 
-            expect(res.status).toHaveBeenCalledWith(200)
-            expect(res.json).toHaveBeenCalledWith(req.body)
+            expect(res.status).rejects.toThrow("please fill in all fields")
         })
     })
 })
