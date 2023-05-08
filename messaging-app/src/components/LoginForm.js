@@ -34,10 +34,10 @@ export default function LoginForm() {
               label="Password"
               type="password"
               />
-              <Button type="submit" onClick={handleLogin} sx={{ color:"#323232" }}>
+              <Button type="submit" onClick={handleLogin}>
                 Login
               </Button>
-              <Button href="/register" sx={{ color: "#323232"}}>
+              <Button href="/register" >
                 Sign Up
               </Button>
           </FormControl>
