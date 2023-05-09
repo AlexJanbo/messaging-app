@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, FormControl, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
-import { LoginUser } from '../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { LoginUser, reset } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
@@ -12,12 +12,22 @@ export default function LoginForm() {
     const dispatch = useDispatch() 
     const navigate = useNavigate()
   
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+    
     const [ formData, setFormData ] = useState({
       email: '',
       password: ''
     })
 
     const { email, password } = formData
+
+    useEffect(() => {
+      if(isError) {
+        console.error(message)
+      }
+
+      dispatch(reset())
+    }, [user, isError, isSuccess, message, navigate, dispatch])
 
     const handleInputChange = (e) => {
       setFormData((prevState) => ({
@@ -30,8 +40,9 @@ export default function LoginForm() {
         e.preventDefault()
 
         dispatch(LoginUser({ email, password }))
-        navigate('/dashboard')
-        console.log("Logging")
+        if(isSuccess || user) {
+          navigate('/dashboard')
+        }
     }
   
     return (
