@@ -3,21 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-do
 import Homepage from './pages/Homepage'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
-import NotFound from './pages/NotFound'
 import { useSelector } from 'react-redux'
 import PrivateRoute from './components/PrivateRoute'
 
 export default function App() {
 
     const { user } = useSelector((state) => state.auth)
-
-    const isLoggedIn = () => {
-        if(user) {
-            return true
-        } else {
-            return false
-        }
-    }
 
     return(
         <Router>

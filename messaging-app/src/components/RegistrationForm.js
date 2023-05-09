@@ -123,7 +123,7 @@ function RegistrationForm() {
                 value={username}
                 onChange={handleInputChange}
                 error={usernameError}
-                helperText={usernameError ? "Please enter a valid username" : null}v
+                helperText={usernameError ? "Please enter a valid username" : null}
               />
 
               <TextField
@@ -134,7 +134,7 @@ function RegistrationForm() {
                 value={email}
                 onChange={handleInputChange}
                 error={emailError}
-                helperText={emailError ? "Please enter a valid email" : null}v
+                helperText={emailError ? "Please enter a valid email" : null}
               />
 
               <TextField
@@ -145,7 +145,7 @@ function RegistrationForm() {
                 value={password}
                 onChange={handleInputChange}
                 error={passwordError}
-                helperText={passwordError ? "Password must contain at least 8 characters with at least one letter and one number" : null}v
+                helperText={passwordError ? "Password must contain at least 8 characters with at least one letter and one number" : null}
               />
               <TextField
                 id="confirm password"

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, FormControl, Typography } from '@mui/material';
+import { Button, CircularProgress, FormControl, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginUser, reset } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,6 @@ export default function LoginForm() {
     const dispatch = useDispatch() 
     const navigate = useNavigate()
   
-    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
     
     const [ formData, setFormData ] = useState({
       email: '',
@@ -21,13 +20,17 @@ export default function LoginForm() {
 
     const { email, password } = formData
 
+    const { user, isSuccess, isLoading, message, isError } = useSelector((state) => state.auth)
+
     useEffect(() => {
       if(isError) {
         console.error(message)
       }
-
+      if(isSuccess || user) {
+        navigate('/dashboard')
+      }
       dispatch(reset())
-    }, [user, isError, isSuccess, message, navigate, dispatch])
+    })
 
     const handleInputChange = (e) => {
       setFormData((prevState) => ({
@@ -36,15 +39,16 @@ export default function LoginForm() {
       }))
     }
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault()
-
-        dispatch(LoginUser({ email, password }))
-        if(isSuccess || user) {
-          navigate('/dashboard')
-        }
+        
+        dispatch(LoginUser({ email: email, password: password }))
     }
-  
+
+    if(isLoading) {
+      return <CircularProgress />
+    }
+
     return (
       <Box
         component="form"
