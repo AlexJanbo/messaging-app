@@ -21,6 +21,7 @@ export default function LoginForm() {
     const { email, password } = formData
 
     const { user, isSuccess, isLoading, message, isError } = useSelector((state) => state.auth)
+    console.log(isError)
 
     useEffect(() => {
       if(isError) {
@@ -29,7 +30,6 @@ export default function LoginForm() {
       if(isSuccess || user) {
         navigate('/dashboard')
       }
-      dispatch(reset())
     })
 
     const handleInputChange = (e) => {
@@ -43,6 +43,7 @@ export default function LoginForm() {
         e.preventDefault()
         
         dispatch(LoginUser({ email: email, password: password }))
+        dispatch(reset())
     }
 
     if(isLoading) {
@@ -69,6 +70,7 @@ export default function LoginForm() {
               name="email"
               value={email}
               onChange={handleInputChange}
+              error={isError}
               />
               <TextField
               id="password"
@@ -77,6 +79,8 @@ export default function LoginForm() {
               name="password"
               value={password}
               onChange={handleInputChange}
+              error={isError}
+              helperText={isError ? "Invalid login credentials" : null}
               />
               <Button type="submit" onClick={handleLogin}>
                 Login

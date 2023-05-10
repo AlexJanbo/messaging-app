@@ -53,7 +53,6 @@ const LoginUser = async(req, res) => {
             throw new Error("Please fill in all fields")
         }
         const foundUser = await FindUserByEmail(email)
-        console.log(foundUser)
 
         if(foundUser && (await ValidatePassword(password, foundUser.password))) {
             res.status(200).json({
