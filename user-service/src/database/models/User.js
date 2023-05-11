@@ -6,6 +6,11 @@ const userSchema = mongoose.Schema({
     username: { type: String, require: true },
     email: { type: String, require: true },
     password: String,
+    chats: [
+        {
+            
+        }
+    ]
 
 },
 {

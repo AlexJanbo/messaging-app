@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 
-function PrivateRoute({ user, children }) {
+export default function PrivateRoute({ user, children }) {
     if(!user) {
         console.log("Protected route")
         return <Navigate to='/' replace />
@@ -9,5 +9,3 @@ function PrivateRoute({ user, children }) {
 
   return (children)
 }
-
-export default PrivateRoute

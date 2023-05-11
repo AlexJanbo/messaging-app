@@ -4,7 +4,7 @@ import { RegisterUser, reset } from '../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-function RegistrationForm() {
+export default function RegistrationForm() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -168,5 +168,3 @@ function RegistrationForm() {
       </Box>
   )
 }
-
-export default RegistrationForm

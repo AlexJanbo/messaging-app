@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { LogoutUser, reset } from '../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 
-function Navbar() {
+export default function Navbar() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -34,5 +34,3 @@ function Navbar() {
     </>
   )
 }
-
-export default Navbar

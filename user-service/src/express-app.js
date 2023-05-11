@@ -8,6 +8,6 @@ module.exports = async (app) => {
     app.use(cors())
     app.use(express.static(__dirname + "/public"))
 
-    app.use('/', require('./api/routes/user-routes'))
+    app.use('/api/users', require('./api/routes/user-routes'))
     
 }
