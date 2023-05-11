@@ -32,7 +32,7 @@ const StartServer = async () => {
     io.on('connection', (socket) => {
         console.log("a user connected")
         socket.on('chat message', (msg) => {
-            console.log("Message: " + msg.text)
+            console.log("Message: " + msg.data.text)
             io.emit('chat message', msg)
         })
         socket.on('disconnect', () => {

@@ -8,6 +8,6 @@ module.exports = async (app) => {
     app.use(cors())
     app.use(express.static(__dirname + "/public"))
 
-    app.use('/api/chats', require('./api/routes/chat-routes'))
+    // app.use('/api/chats', require('./api/routes/chat-routes'))
     
 }

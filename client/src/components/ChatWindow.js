@@ -6,8 +6,8 @@ import io from 'socket.io-client'
 export default function ChatWindow(props) {
 
     const { user } = useSelector((state) => state.auth)
+    const currentUser = user
 
-    const currentUser =  props.currentUser
     const recipientUser = props.recipientUser
 
     const [ socket, SetSocket ] = useState(null)
@@ -55,7 +55,7 @@ export default function ChatWindow(props) {
 
                     {messages.map((message, index) => (
                         <ListItem key={index}>
-                            <Typography >{message.sender}: </Typography>
+                            <Typography >{message.data.sender.username}: </Typography>
                             <Typography > {message.data.text}</Typography>
                          </ListItem>
                     ))}

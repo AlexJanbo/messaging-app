@@ -1,8 +1,14 @@
-const WebSocket = require('ws')
-const server = new WebSocket.Server({ port: '8080' })
+const express = require('express')
+const { PORT } = require('/src/config/')
 
-server.on('connection', socket => {
-    socket.on('message', message => {
-        socket.send('ACK')
-    })
+const app = express()
+
+app.use(express.json())
+
+app.use('/', (req, res) => {
+    res.status(200).send({"msg": "User Jebaited"})
+})
+
+app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`)
 })

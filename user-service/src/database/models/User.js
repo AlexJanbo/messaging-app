@@ -10,6 +10,14 @@ const userSchema = mongoose.Schema({
         {
             
         }
+    ],
+    messages: [{
+
+    }],
+    notifications: [
+        {
+
+        }
     ]
 
 },

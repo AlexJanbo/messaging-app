@@ -1,5 +1,5 @@
 const express = require('express')
-const { RegisterUser, LoginUser, GetUserInformation } = require('../controllers/user-controllers')
+const { RegisterUser, LoginUser, GetUserInformation } = require('../controllers/user-controller')
 const { Authenticate } = require('../middleware/authentication')
 const { LimitLoginAttempts } = require('../middleware/limit-login-attempts')
 
