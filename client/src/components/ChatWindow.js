@@ -12,7 +12,7 @@ export default function ChatWindow(props) {
     const [ messages, setMessages ] = useState([])
 
     useEffect(() => {
-        const newSocket = io('http//localhost:4000')
+        const newSocket = io(`http://${window.location.hostname}:1234`)
         SetSocket(newSocket)
         return () => newSocket.close()
     }, [])
@@ -46,7 +46,7 @@ export default function ChatWindow(props) {
             <ul>
                 {messages.map((message, index) => (
                     <li key={index}>
-                        <strong>{message.sender}:</strong>
+                        <strong>{message}:</strong>
                         {message.text}
                     </li>
                 ))}

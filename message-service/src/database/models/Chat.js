@@ -20,11 +20,11 @@ const ChatSchema = new Schema({
             email: { type: String, require: true}
         }
     ],
-    messages: [
-        {
-            type: mongoose.Schema.Types.ObjectId, ref: 
-        }
-    ]
+    // messages: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId, ref: 
+    //     }
+    // ]
 }, 
 {
     timestamps: true
