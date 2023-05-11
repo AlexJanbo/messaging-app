@@ -19,26 +19,6 @@ const StartServer = async () => {
         process.exit()
     })
 
-    const server = require('http').Server(app)
-    server.listen(1234, () => {
-        console.log("Socket server listening on port 1234")
-    })
-
-    const io = require('socket.io')(server, {
-        cors: {
-            origin: "http://localhost:3000"
-        }
-    })
-    io.on('connection', (socket) => {
-        console.log("a user connected")
-        socket.on('chat message', (msg) => {
-            console.log("Message: " + msg.text)
-            io.emit('chat message', msg)
-        })
-        socket.on('disconnect', () => {
-            console.log('user disconnected')
-        })
-    })
 }
 
 StartServer()

@@ -1,10 +1,13 @@
-import { Typography } from '@mui/material'
+import { List, ListItem, Typography } from '@mui/material'
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 
 export default function ChatWindow(props) {
 
-    const currentUser = props.currentUser
+    const { user } = useSelector((state) => state.auth)
+
+    const currentUser =  props.currentUser
     const recipientUser = props.recipientUser
 
     const [ socket, SetSocket ] = useState(null)
@@ -20,8 +23,9 @@ export default function ChatWindow(props) {
     useEffect(() => {
         if(!socket) return
 
-        socket.on('chat message', (message) => {
-            setMessages((message) => [...messages, message])
+        socket.on('chat message', (data) => {
+            setMessages((prevState) => [...prevState, data])
+            setMessage('')
         })
 
         return () => socket.off('chat message')
@@ -32,24 +36,30 @@ export default function ChatWindow(props) {
         if(!message) {
             return
         }
-        socket.emit('chat message', {
+        const data = {
             sender: currentUser,
             recipient: recipientUser,
             text: message
+        }
+        socket.emit('chat message', {
+            data
         })
-        setMessage('')
     }
+    console.log(messages)
 
     return (
         <div>
             <Typography variant='h2'>Chatting with {recipientUser}</Typography>
             <ul>
-                {messages.map((message, index) => (
-                    <li key={index}>
-                        <strong>{message}:</strong>
-                        {message.text}
-                    </li>
-                ))}
+                <List>
+
+                    {messages.map((message, index) => (
+                        <ListItem key={index}>
+                            <Typography >{message.sender}: </Typography>
+                            <Typography > {message.data.text}</Typography>
+                         </ListItem>
+                    ))}
+                </List>
             </ul>
             <form onSubmit={handleSubmitMessage}>
                 <input
