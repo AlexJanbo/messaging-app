@@ -17,20 +17,24 @@ export default function Navbar() {
 
   return (
     <>
-        <Box sx={{ flexGrow: 1}}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography>
-                        Messaging App
-                    </Typography>
-                    <Grid sx={{ marginLeft: "85%", display: "flex"}}>
+        <AppBar position="static" sx={{ height: "10vh", maxWidth: "100vw"}}>
+            <Grid sx={{ display: "flex", flexDirection: "row"}}>
+                <Grid>
+                    <Toolbar>
+                        <Typography variant="h4">
+                            Messaging App
+                        </Typography>
+                    </Toolbar>
+                </Grid>
+                <Grid>
+                    <Toolbar>
                         <Button onClick={handleLogout} color="error" variant="contained" >
                             Logout
                         </Button>
-                    </Grid>
-                </Toolbar>
-            </AppBar>
-        </Box>
+                    </Toolbar>
+                </Grid>
+            </Grid>
+        </AppBar>
     </>
   )
 }
