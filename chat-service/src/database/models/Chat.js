@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const chatSchema = mongoose.Schema({
 
     chatName: { type: String, require: true},
-    isGroup: { type: Boolean, require: true},
+    isGroup: { type: Boolean, require: true, default: false},
     members: [{
         type: mongoose.Schema.Types.ObjectId
     }],
@@ -13,3 +13,5 @@ const chatSchema = mongoose.Schema({
 {
     timestamps: true
 })
+
+module.exports = mongoose.model('Chat', chatSchema)

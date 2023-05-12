@@ -12,6 +12,10 @@ const DeleteChat = async (req, res) => {
 
 }
 
+const CreateGroupChat = async (req, res) => {
+
+}
+
 const AddGroupMember = async (req, res) => {
 
 }
@@ -32,6 +36,7 @@ module.exports = {
     CreateChat,
     GetChat,
     DeleteChat,
+    CreateGroupChat,
     AddGroupMember,
     RemoveGroupMember,
     ChangeChatName,
