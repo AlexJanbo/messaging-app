@@ -2,12 +2,10 @@ const Chat = require('../models/Chat')
 
 // All chat db logic
 
-const CreateChat = async(members, admin, chatName) => {
+const createChat = async(members, admin) => {
     const chat = await Chat.create({
         members: members,
         admin: admin,
-        isGroup: false,
-        chatName: chatName, 
     })
     if(chat) {
         return chat
@@ -97,7 +95,7 @@ const ChangeChatAdmin = async(chatId, newAdminId) => {
 }
 
 module.exports = {
-    CreateChat,
+    createChat,
     GetChat,
     DeleteChat,
     CreateGroupChat,

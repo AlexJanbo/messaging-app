@@ -18,10 +18,10 @@ export default function Navbar() {
   return (
     <>
         <AppBar position="static" sx={{ height: "10vh", maxWidth: "100vw"}}>
-            <Grid sx={{ display: "flex", flexDirection: "row"}}>
+            <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center"}}>
                 <Grid>
                     <Toolbar>
-                        <Typography variant="h4">
+                        <Typography variant="h3">
                             Messaging App
                         </Typography>
                     </Toolbar>

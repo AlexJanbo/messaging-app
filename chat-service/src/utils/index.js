@@ -11,3 +11,7 @@ const ValidateJWT = async(req) => {
         
     }
 }
+
+module.exports = {
+    ValidateJWT
+}

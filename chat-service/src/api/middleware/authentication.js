@@ -1,4 +1,4 @@
-const { ValidateSignature } = require('../../utils')
+const { ValidateJWT } = require('../../utils')
 
 const Authentication = async (req, res, next) => {
 
