@@ -2,10 +2,10 @@ const Chat = require('../models/Chat')
 
 // All chat db logic
 
-const createChat = async(members, admin) => {
+const createChat = async(username) => {
+    console.log("reached repository")
     const chat = await Chat.create({
-        members: members,
-        admin: admin,
+        chatName: username
     })
     if(chat) {
         return chat

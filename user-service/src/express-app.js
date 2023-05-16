@@ -8,6 +8,10 @@ module.exports = async (app) => {
     app.use(cors())
     app.use(express.static(__dirname + "/public"))
 
-    app.use('/api/users', require('./api/routes/user-routes'))
+    // With gateway
+    app.use('/', require('./api/routes/user-routes'))
+
+    // Without gateway
+    // app.use('/api/users', require('./api/routes/user-routes'))
     
 }

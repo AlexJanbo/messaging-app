@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.route('/register').post(RegisterUser)
 router.route('/login').post(LimitLoginAttempts, LoginUser)
-// router.route('/profile/:id').post(Authenticate, GetUserInformation)
+router.route('/profile').post(GetUserInformation)
 
 
 module.exports = router

@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const amqplib = require('amqplib')
 
-const { APP_SECRET } = require('../config')
+const { APP_SECRET, MESSAGE_QUEUE_URL, EXCHANGE_NAME } = require('../config')
 
 // Utility functions
 
@@ -56,10 +57,51 @@ const ValidateJWT = async(req) => {
     }    
 }
 
+// Message broker
+const CreateChannel = async () => {
+    try {
+        const connection = await amqplib.connect(MESSAGE_QUEUE_URL)
+        const channel = await connection.createChannel()
+        await channel.assertQueue(EXCHANGE_NAME, "direct", { durable: true })
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+const PublishMessage = async (channel, service, message) => {
+    channel.publish(EXCHANGE_NAME, service, Buffer.from(message))
+    console.log("sent", message)
+}
+
+const SubscribeMessage = async (channel, service) => {
+    await channel.assertExchange(EXCHANGE_NAME, "direct", { durable: true })
+    const queue = await channel.assertQueue("", { exclusive: true })
+    console.log(`Waiting for message in queue: ${queue.queue}`)
+
+    channel.bind(queue.queue, EXCHANGE_NAME, USER_SERVICE, EXCHANGE_NAME)
+
+    channel.consume(
+        queue.queue,
+        (message) => {
+            if(message.content) {
+                console.log("The message is:", message.content.toString())
+                service.SubscribeEvents(message.content.toString())
+            }
+            console.log("[X] recieved")
+        },
+        {
+            noAck: true
+        }
+    )
+}
+
 
 module.exports = {
     GenerateHashedPassword,
     ValidatePassword,
     GenerateSignedJWT,
     ValidateJWT,
+    CreateChannel,
+    PublishMessage,
+    SubscribeMessage,
 }

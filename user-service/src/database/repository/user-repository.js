@@ -35,6 +35,10 @@ const FindUserByEmail = async(email) => {
     return foundUser
 }
 
+const FindUserByUsername = async(username) => {
+    const foundUser = await User.findOne({ username: username})
+    return foundUser
+}
 
 const FindUserById = async(userId) => {
     const existingUser = await User.findById( userId )
@@ -46,6 +50,7 @@ module.exports = {
     CreateUser,
     EmailInUse,
     FindUserByEmail,
+    FindUserByUsername,
     UsernameInUse,
     FindUserById,
 }

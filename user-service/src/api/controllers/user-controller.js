@@ -56,6 +56,7 @@ const LoginUser = async(req, res) => {
 
         if(foundUser && (await ValidatePassword(password, foundUser.password))) {
             res.status(200).json({
+                id: foundUser._id,
                 username: foundUser.username,
                 email: foundUser.email,
                 token: GenerateSignedJWT(foundUser._id)
@@ -70,17 +71,18 @@ const LoginUser = async(req, res) => {
 
 
 // @desc Get a user information 
-// @route POST /api/user/profile/:id 
+// @route POST /api/user/profile/ 
 // @access Public
 const GetUserInformation = async(req, res) => {
     try {
-        const { id } = req.body
+        console.log("ping")
+        const { username } = req.body
         const userRepository = new UserRepository()        
 
-        const user = userRepository.FindUserById({ id })
+        const user = userRepository.FindUserByUsername({ username })
 
         if(user) {
-            res.status(200).json({ ...user })
+            res.status(200).json(user)
         }
     } catch (error) {
         res.status(400).json({ message: error.message })

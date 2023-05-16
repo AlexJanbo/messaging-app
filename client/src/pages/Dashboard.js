@@ -14,7 +14,6 @@ function Dashboard() {
             <Stack direction="row">
               <ChatContainer />
               <ChatWindow />
-
             </Stack>
           </Stack>
         </Paper>

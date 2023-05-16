@@ -1,26 +1,71 @@
+const createChat = require('../../database/repository/chat-repository')
+const Chat = require('../../database/models/Chat')
 
 // @desc Create a one on one chat
 // @route POST /api/chats/create-chat
 // @access Private
 const CreateChat = async (req, res) => {
     try {
-        const creator = req.user.username
-        const member = req.body.username
-        if(!creator || !member) {
+        const { user, username } = req.body
+        // console.log(req.body)
+        if(!username) {
             res.status(400)
             throw new Error("Chat members not found")
         }
-        const members = [creator, member]
-        const chat = await createChat(members)
-        res.status(200).json(chat)
+        const userData = {
+            username: username
+        }
+        console.log(userData)
+        const member = await axios.post('http://localhost:8000/api/users/profile/', userData)
+        console.log(member)
+        // const chat = await Chat.create({
+        //     chatName: "Default Chat Name",
+        //     members: [user.id],
+        //     admin: user.id,
+        //     isGroup: false
+        // })
+        // res.status(200).json(chat)
 
     } catch (error) {
-        
+        res.status(404).json({ message: error.message })
     }
 }
 
 const GetChat = async (req, res) => {
+    try {
+        const { chatId } = req.body
+        if(!chatId) {
+            res.status(400)
+            throw new Error("Chat id not found")
+        }
+        const chat = await Chat.findById(chatId)
+        res.status(200).json(chat)
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
 
+const GetAllChats = async (req, res) => {
+    try {
+        const { userId } = req.body
+        console.log(userId)
+        if(!userId) {
+            res.status(400)
+            throw new Error("User id not found")
+        }
+
+        const chat = await Chat.find({ 
+            members: {
+                $elemMatch: {
+                    $in: [userId]
+                }
+            }
+        })
+        console.log(chat)
+        res.status(200).json(chat)
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
 }
 
 const DeleteChat = async (req, res) => {
@@ -50,6 +95,7 @@ const ChangeGroupAdmin = async (req, res) => {
 module.exports = {
     CreateChat,
     GetChat,
+    GetAllChats,
     DeleteChat,
     CreateGroupChat,
     AddGroupMember,
