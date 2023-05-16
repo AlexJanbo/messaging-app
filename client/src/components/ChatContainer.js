@@ -13,12 +13,12 @@ export default function ChatContainer (props) {
     const { chats } = useSelector((state) => state.chat)
 
     
-    const [ username, setUsername ] = useState('')
+    const [ memberUsername, setMemberUsername ] = useState('')
     
-    const userId = user.id
+    const username = user.username
     useEffect(() => {
 
-        dispatch(GetAllChats({ userId }))
+        dispatch(GetAllChats({ username }))
 
         return () => {
             dispatch(reset())
@@ -29,7 +29,7 @@ export default function ChatContainer (props) {
     const handleCreateChat = (e) => {
         e.preventDefault()
 
-        dispatch(CreateChat({ user, username }))
+        dispatch(CreateChat({ user, memberUsername }))
     }
 
     return (
@@ -47,7 +47,6 @@ export default function ChatContainer (props) {
                     return (
                         <Grid key={index} sx={{ height: "20vh", margin: "10px" }}>
                             <Typography> {chat.chatName}</Typography>
-                            <Typography> {chat.members}</Typography>
                         </Grid>
                     )
                 })
@@ -62,8 +61,8 @@ export default function ChatContainer (props) {
                         label="Username"
                         type="text"
                         name="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={memberUsername}
+                        onChange={(e) => setMemberUsername(e.target.value)}
                     />
                     <Button onClick={handleCreateChat}>
                         Add user to chat!

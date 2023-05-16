@@ -5,9 +5,10 @@ const chatSchema = mongoose.Schema({
     chatName: { type: String},
     isGroup: { type: Boolean, require: true, default: false},
     members: [{
-        type: mongoose.Schema.Types.ObjectId
+        email: { type: String},
+        username: { type: String},
     }],
-    admin: { type: mongoose.Schema.Types.ObjectId},
+    admin: { type: String },
     lastMessage: { type: String}
 
 },

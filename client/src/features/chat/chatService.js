@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = "api/chats/"
+const API_URL = "/api/chats/"
 
 const CreateChat = async(chatData, token) => {
 

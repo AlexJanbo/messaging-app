@@ -1,30 +1,44 @@
 const createChat = require('../../database/repository/chat-repository')
 const Chat = require('../../database/models/Chat')
+const axios = require('axios')
 
 // @desc Create a one on one chat
 // @route POST /api/chats/create-chat
 // @access Private
 const CreateChat = async (req, res) => {
     try {
-        const { user, username } = req.body
-        // console.log(req.body)
-        if(!username) {
+        // user is the user object from chat creator
+        // username is string input that chat creator wishes to add to a chat
+        const { user, memberUsername } = req.body
+
+        // Make sure that we have both the user and username
+        if(!username || !user) {
             res.status(400)
             throw new Error("Chat members not found")
         }
+
+        // Get chat member's user object from user microservice since client can not pass that information
         const userData = {
-            username: username
+            username: memberUsername
         }
-        console.log(userData)
-        const member = await axios.post('http://localhost:8000/api/users/profile/', userData)
-        console.log(member)
-        // const chat = await Chat.create({
-        //     chatName: "Default Chat Name",
-        //     members: [user.id],
-        //     admin: user.id,
-        //     isGroup: false
-        // })
-        // res.status(200).json(chat)
+        const response = await axios.post('http://localhost:8000/api/users/profile', userData)
+        const chatMember = response.data
+
+        // Sanitizing user information that will be saved to chats
+        const creator = {
+            username: user.username,
+            email: user.email,
+        }
+
+        // Saving the chat to the database and returning status code 200 and chat as json
+        const chat = await Chat.create({
+            chatName: `${creator.username} and ${chatMember.username}'s chat`,
+            members: [creator, chatMember],
+            admin: creator.username,
+            isGroup: false
+        })
+        console.log(chat)
+        res.status(200).json({ chat })
 
     } catch (error) {
         res.status(404).json({ message: error.message })
@@ -47,20 +61,14 @@ const GetChat = async (req, res) => {
 
 const GetAllChats = async (req, res) => {
     try {
-        const { userId } = req.body
-        console.log(userId)
-        if(!userId) {
+        const { username } = req.body
+
+        if(!username) {
             res.status(400)
-            throw new Error("User id not found")
+            throw new Error("User username not found")
         }
 
-        const chat = await Chat.find({ 
-            members: {
-                $elemMatch: {
-                    $in: [userId]
-                }
-            }
-        })
+        const chat = await Chat.find({ 'members.username': username })
         console.log(chat)
         res.status(200).json(chat)
     } catch (error) {

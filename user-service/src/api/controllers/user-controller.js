@@ -1,5 +1,6 @@
 const { GenerateHashedPassword, ValidatePassword, GenerateSignedJWT } = require('../../utils/index')
 const { CreateUser, EmailInUse, FindUserByEmail, UsernameInUse, FindUserById } = require('../../database/repository/user-repository')
+const { FindUserByUsername } = require('../../database/repository/user-repository')
 // Goals:
 // Try to include business logic only
 // No database operations and try to use reusable functions
@@ -75,14 +76,14 @@ const LoginUser = async(req, res) => {
 // @access Public
 const GetUserInformation = async(req, res) => {
     try {
-        console.log("ping")
         const { username } = req.body
-        const userRepository = new UserRepository()        
-
-        const user = userRepository.FindUserByUsername({ username })
+        const user = await FindUserByUsername(req.body.username)
 
         if(user) {
-            res.status(200).json(user)
+            res.status(200).json({
+                username: user.username,
+                email: user.email,
+            })
         }
     } catch (error) {
         res.status(400).json({ message: error.message })
