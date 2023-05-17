@@ -1,16 +1,19 @@
 import { Button, Divider, FormControl, Grid, Input, List, ListItem, TextField, Typography } from '@mui/material'
 import React, { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
+import { SendMessage } from '../features/message/messageSlice';
 
 export default function ChatWindow(props) {
 
-    const { user } = useSelector((state) => state.auth)
-    const currentUser = user
+    const dispatch = useDispatch()
 
-    const recipientUser = props.recipientUser
+    const { chat, setChat } = props
+
+    const { user } = useSelector((state) => state.auth)
+
 
     const [ socket, SetSocket ] = useState(null)
     const [ message, setMessage ] = useState('')
@@ -45,10 +48,11 @@ export default function ChatWindow(props) {
             return
         }
         const data = {
-            sender: currentUser,
-            recipient: recipientUser,
-            text: message
+            sender: user,
+            text: message,
+            chatId: chat,
         }
+        dispatch(SendMessage(data))
         socket.emit('chat message', {
             data
         })
@@ -57,8 +61,9 @@ export default function ChatWindow(props) {
 
     return (
         <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh"}}>
-            <Grid sx={{ backgroundColor: "#1976d2", borderBottom: "2px solid black" }}>
+            <Grid sx={{ display: "flex", backgroundColor: "#1976d2", borderBottom: "2px solid black" }}>
                 <Typography variant='h4' textAlign="center" color="white">Chat name</Typography>
+                <Button onClick={() => setChat('')} color="error">X</Button>
             </Grid>
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
                     <List>

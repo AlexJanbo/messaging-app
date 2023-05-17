@@ -1,10 +1,16 @@
-import { Paper, Stack } from '@mui/material'
-import React from 'react'
+import { Paper, Stack, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import ChatWindow from '../components/ChatWindow'
 import ChatContainer from '../components/ChatContainer'
 
 function Dashboard() {
+
+  const [ chat, setChat ] = useState('')
+  const selectChat = (chatId) => {
+    setChat(chatId)
+  }
+
   return (
     <>
 
@@ -12,8 +18,12 @@ function Dashboard() {
           <Stack direction="column">
             <Navbar />
             <Stack direction="row">
-              <ChatContainer />
-              <ChatWindow />
+              <ChatContainer chat={chat} setChat={selectChat}/>
+              {chat ?
+                <ChatWindow chat={chat} setChat={selectChat}/>
+                :
+                <Typography>Open a chat!</Typography>
+              }
             </Stack>
           </Stack>
         </Paper>

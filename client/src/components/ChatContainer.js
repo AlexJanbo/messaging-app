@@ -9,8 +9,13 @@ export default function ChatContainer (props) {
 
     const dispatch = useDispatch()
 
+    const chat = props.chat
+    const setChat = props.setChat
+    console.log(setChat)
+
     const { user } = useSelector((state) => state.auth)
     const { chats } = useSelector((state) => state.chat)
+
 
     
     const [ memberUsername, setMemberUsername ] = useState('')
@@ -32,6 +37,7 @@ export default function ChatContainer (props) {
         dispatch(CreateChat({ user, memberUsername }))
     }
 
+
     return (
         <Grid sx={{display: "flex", flexDirection: "column", height: "90vh", width: "30vw", border: "2px solid black", margin: "0", boxShadow: "2px"}}>
             <Grid sx={{display: "flex", height: "10vh", borderBottom: "2px solid black", backgroundColor: "#808080", justifyContent: "center", alignItems: "center"}}>
@@ -45,8 +51,9 @@ export default function ChatContainer (props) {
                 ?
                 chats.map((chat, index) => {
                     return (
-                        <Grid key={index} sx={{ height: "20vh", margin: "10px" }}>
+                        <Grid key={index} sx={{display: "flex", direction: "row", height: "10vh", margin: "10px", alignContent: "center"}}>
                             <Typography> {chat.chatName}</Typography>
+                            <Button onClick={() => setChat(chat._id)}>Open</Button>
                         </Grid>
                     )
                 })

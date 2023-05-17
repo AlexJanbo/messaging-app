@@ -37,7 +37,7 @@ const CreateChat = async (req, res) => {
             admin: creator.username,
             isGroup: false
         })
-        console.log(chat)
+        // console.log(chat)
         res.status(200).json({ chat })
 
     } catch (error) {
