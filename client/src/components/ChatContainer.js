@@ -11,7 +11,6 @@ export default function ChatContainer (props) {
 
     const chat = props.chat
     const setChat = props.setChat
-    console.log(setChat)
 
     const { user } = useSelector((state) => state.auth)
     const { chats } = useSelector((state) => state.chat)

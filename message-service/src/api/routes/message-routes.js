@@ -6,7 +6,7 @@ const { SendMessage, GetMessages, DeleteMessage } = require('../controllers/mess
 const router = express.Router()
 
 router.route('/send-message').post(SendMessage)
-// router.route('/get-messages').get(Authenticate, GetMessages)
+router.route('/get-messages').post(GetMessages)
 // router.route('/delete-messages').delete(Authenticate, DeleteMessage)
 
 module.exports = router

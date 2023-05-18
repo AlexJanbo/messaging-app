@@ -10,7 +10,7 @@ const SendMessage = async (req, res) => {
         }
         const message = await Message.create({
             sender: {
-                id: sender.id,
+                id: sender._id,
                 username: sender.username,
                 email: sender.email
             },
@@ -26,9 +26,22 @@ const SendMessage = async (req, res) => {
 
 }
 
-// const GetMessages = async (req, res) => {
+const GetMessages = async (req, res) => {
 
-// }
+    try {
+        const { chatId } = req.body
+
+        if(!chatId) {
+            throw new Error("Please provide the chat id")
+        }
+
+        const messages = await Message.find({ "chatId": chatId})
+
+        res.status(200).json(messages)
+    } catch (error) {
+       res.status(404).json({ message: error.message })
+    }
+}
 
 // const DeleteMessages = async (req, res ) => {
 
@@ -36,6 +49,6 @@ const SendMessage = async (req, res) => {
 
 module.exports = {
     SendMessage,
-    // GetMessages,
+    GetMessages,
     // DeleteMessages
 }

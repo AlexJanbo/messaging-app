@@ -15,8 +15,22 @@ const SendMessage = async(messageData, token) => {
     return response.data
 }
 
+const GetMessages = async(messageData, token) => {
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.post(API_URL + "get-messages", messageData, config)
+
+    return response.data
+}
+
 const messageService = {
-    SendMessage
+    SendMessage,
+    GetMessages,
 }
 
 export default messageService

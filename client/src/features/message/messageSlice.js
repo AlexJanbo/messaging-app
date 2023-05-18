@@ -20,6 +20,18 @@ export const SendMessage = createAsyncThunk('messages/send', async (messageData,
     }
 })
 
+
+export const GetMessages = createAsyncThunk('messages/getAll', async (messageData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await messageService.GetMessages(messageData, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+
 export const messageSlice = createSlice({
     name: 'message',
     initialState,
@@ -46,7 +58,19 @@ export const messageSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
-
+            .addCase(GetMessages.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(GetMessages.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.messages = action.payload
+            })
+            .addCase(GetMessages.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
     }
 })
 

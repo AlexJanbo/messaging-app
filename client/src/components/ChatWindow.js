@@ -1,25 +1,32 @@
-import { Button, Divider, FormControl, Grid, Input, List, ListItem, TextField, Typography } from '@mui/material'
+import { Button, CircularProgress, Divider, FormControl, Grid, Input, List, ListItem, TextField, Typography } from '@mui/material'
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
-import { SendMessage } from '../features/message/messageSlice';
+import { GetMessages, SendMessage } from '../features/message/messageSlice';
 
 export default function ChatWindow(props) {
 
     const dispatch = useDispatch()
 
     const { chat, setChat } = props
+    const chatId = chat
 
     const { user } = useSelector((state) => state.auth)
-
+    const previousMessages = useSelector((state) => state.message.messages)
+    const { isLoading } = useSelector((state) => state.message)
 
     const [ socket, SetSocket ] = useState(null)
     const [ message, setMessage ] = useState('')
     const [ messages, setMessages ] = useState([])
 
     const messageEndRef = useRef(null)
+
+    useEffect(() => {
+        dispatch(GetMessages({ chatId }))
+        setMessages([...previousMessages])
+    }, [previousMessages])
 
     useEffect(() => {
         const newSocket = io(`http://${window.location.hostname}:1234`)
@@ -47,17 +54,23 @@ export default function ChatWindow(props) {
         if(!message) {
             return
         }
-        const data = {
+        // const data = {
+        //     sender: user,
+        //     text: message,
+        //     chatId: chat,
+        // }
+        socket.emit('chat message', {
             sender: user,
             text: message,
             chatId: chat,
-        }
-        dispatch(SendMessage(data))
-        socket.emit('chat message', {
-            data
         })
+        dispatch(SendMessage({
+            sender: user,
+            text: message,
+            chatId, chat
+        }))
     }
-    console.log(messages)
+
 
     return (
         <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh"}}>
@@ -68,12 +81,12 @@ export default function ChatWindow(props) {
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
                     <List>
                         {messages.map((message, index) => (
-                            message.data.sender.username === user.username
+                            message.sender.username === user.username
                             ?
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-end"}}>
 
                                 <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word"}}>
-                                    <Typography sx={{ wordWrap: "break-word"}}> {message.data.text}</Typography>
+                                    <Typography sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
                                 </Grid>
                                 <PersonIcon />
                             </ListItem>
@@ -81,8 +94,8 @@ export default function ChatWindow(props) {
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-start"}}>
                                 <PersonIcon />
                                 <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word"}}>
-                                    <Typography sx={{ textDecoration: "underline"}}>{message.data.sender.username}: </Typography>
-                                    <Typography sx={{ wordWrap: "break-word"}}> {message.data.text}</Typography>
+                                    <Typography sx={{ textDecoration: "underline"}}>{message.sender.username}: </Typography>
+                                    <Typography sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
                                 </Grid>
                             </ListItem>
                             
