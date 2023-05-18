@@ -4,7 +4,8 @@ const SendMessage = async (req, res) => {
 
     try {
         console.log("ping")
-        const { sender, text,chatId } = req.body
+        const { sender, text, chatId } = req.body
+        console.log(chatId)
         if(!text) {
             throw new Error("Please provide all required message information")
         }

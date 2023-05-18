@@ -7,33 +7,24 @@ import { GetUserInformation } from '../features/auth/authSlice';
 
 export default function ChatContainer (props) {
 
+    const chat = props.chat
+    const setOpenChat = props.setOpenChat
+    const user = props.user
+    const chats = props.allChats
+
+
     const dispatch = useDispatch()
 
-    const chat = props.chat
-    const setChat = props.setChat
 
-    const { user } = useSelector((state) => state.auth)
-    const { chats } = useSelector((state) => state.chat)
-
-
-    
     const [ memberUsername, setMemberUsername ] = useState('')
     
-    const username = user.username
-    useEffect(() => {
-
-        dispatch(GetAllChats({ username }))
-
-        return () => {
-            dispatch(reset())
-        }
-    }, [])
-
     
     const handleCreateChat = (e) => {
         e.preventDefault()
 
         dispatch(CreateChat({ user, memberUsername }))
+        dispatch(reset())
+        // window.location.reload()
     }
 
 
@@ -52,7 +43,7 @@ export default function ChatContainer (props) {
                     return (
                         <Grid key={index} sx={{display: "flex", direction: "row", height: "10vh", margin: "10px", alignContent: "center"}}>
                             <Typography> {chat.chatName}</Typography>
-                            <Button onClick={() => setChat(chat._id)}>Open</Button>
+                            <Button onClick={() => setOpenChat(chat._id)}>Open</Button>
                         </Grid>
                     )
                 })

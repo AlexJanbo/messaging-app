@@ -8,7 +8,7 @@ const MessageSchema = mongoose.Schema({
         username: { type: String},
         email:  { type: String},
     },
-    chatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat'}
+    chatId: { type: mongoose.Schema.Types.ObjectId}
 },
 {
     timestamps: true

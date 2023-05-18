@@ -12,7 +12,7 @@ const CreateChat = async (req, res) => {
         const { user, memberUsername } = req.body
 
         // Make sure that we have both the user and username
-        if(!username || !user) {
+        if(!memberUsername || !user) {
             res.status(400)
             throw new Error("Chat members not found")
         }
@@ -37,7 +37,6 @@ const CreateChat = async (req, res) => {
             admin: creator.username,
             isGroup: false
         })
-        // console.log(chat)
         res.status(200).json({ chat })
 
     } catch (error) {
@@ -69,7 +68,6 @@ const GetAllChats = async (req, res) => {
         }
 
         const chat = await Chat.find({ 'members.username': username })
-        console.log(chat)
         res.status(200).json(chat)
     } catch (error) {
         res.status(404).json({ message: error.message })
