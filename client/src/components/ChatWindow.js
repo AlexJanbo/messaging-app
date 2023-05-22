@@ -18,52 +18,88 @@ export default function ChatWindow(props) {
     const { isLoading } = useSelector((state) => state.message)
 
     
-    
-    const [ socket, SetSocket ] = useState(null)
-    const [ message, setMessage ] = useState('')
+    const [ socket, setSocket ] = useState(null)
+    const [ newMessage, setNewMessage ] = useState('')
     const [ messages, setMessages ] = useState([...previousMessages])
+    const [ isTyping, setIsTyping ] = useState(false)
 
-    const messageEndRef = useRef(null)
-
+    
+    // This useEffect is for setting up the socket io
     useEffect(() => {
         const newSocket = io(`http://${window.location.hostname}:1234`)
-        SetSocket(newSocket)
-        return () => newSocket.close()
+        setSocket(newSocket)
+        
+
+        // Socket instance joins a specific chat room
+        newSocket.emit('join chat', (chatId))
+        // Cleanup function to disconnect the socket when component unmounts
+        return () => newSocket.disconnect()
     }, [])
 
+
+    // This useEffect handles events that the socket io instance receives
     useEffect(() => {
         if(!socket) return
 
+        // Updates messages when a socket 'chat message' event is received
         socket.on('chat message', (data) => {
             setMessages((prevState) => [...prevState, data])
-            setMessage('')
+            setNewMessage('')
         })
-
+        
+        // Displays when a chat member is currently typing
+        socket.on('typing', () => setIsTyping(true))
+        socket.on('stop typing', () => setIsTyping(false))
         return () => socket.off('chat message')
     }, [socket])
+    
 
+    // Reference to allow automatic scroll to new message
+    const messageEndRef = useRef(null)
     useEffect(() => {
         messageEndRef.current?.scrollIntoView()
     }, [messages])
 
-    const handleSubmitMessage = (e) => {
+
+
+    const handleTyping = (e) => {
         e.preventDefault()
-        if(!message) {
+        setNewMessage(e.target.value)
+
+        if(!socket) {
             return
         }
-        // const data = {
-        //     sender: user,
-        //     text: message,
-        //     chatId: chat,
-        // }
+
+        if(!isTyping) {
+            setIsTyping(true)
+            socket.emit('typing', (chatId), (user))
+        }
+
+        let timeSinceType = new Date().getTime()
+        const timeConstant = 4000
+        setTimeout(() => {
+            const currentTime = new Date().getTime()
+            if((currentTime - timeSinceType) >= timeConstant && isTyping ) {
+                socket.emit('stop typing', (chatId))
+                setIsTyping(false)
+            }
+        }, timeConstant)
+    }
+
+    const handleSubmitMessage = (e) => {
+        e.preventDefault()
+        if(!newMessage) {
+            return
+        }
+        socket.emit('stop typing', chatId)
         socket.emit('chat message', {
             sender: user,
-            text: message,
+            text: newMessage,
             chatId: chatId,
-        })
+        }, chatId)
         dispatch(SendMessage({
             sender: user,
-            text: message,
+            text: newMessage,
             chatId: chatId,
         }))
         dispatch(reset())
@@ -71,8 +107,7 @@ export default function ChatWindow(props) {
 
     const handleCloseChat = (e) => {
         e.preventDefault()
-        SetSocket(null)
-        setMessage('')
+        setNewMessage('')
         setMessages([])
         setOpenChat('')
     }
@@ -112,18 +147,18 @@ export default function ChatWindow(props) {
                     </List>
                     <div ref={messageEndRef} />
             </Grid>
-                <form>
-            <Grid sx={{ display: "flex", justifyContent: "center", borderTop: "1px solid black"}}>
-                    <TextField
-                        type='text'
-                        placeholder="Type a message..."
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        sx={{ margin: "5px"}}
-                    />
-                    <Button type="submit" onClick={handleSubmitMessage} endIcon={<SendIcon />}/>
-            </Grid>
-                </form>
+            <form>
+                <Grid sx={{ display: "flex", justifyContent: "center", borderTop: "1px solid black"}}>
+                        <TextField
+                            type='text'
+                            placeholder="Type a message..."
+                            value={newMessage}
+                            onChange={handleTyping}
+                            sx={{ margin: "5px"}}
+                        />
+                        <Button type="submit" onClick={handleSubmitMessage} endIcon={<SendIcon />}/>
+                </Grid>
+            </form>
         </Grid>
     )
 }

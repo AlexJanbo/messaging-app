@@ -7,10 +7,10 @@ import { GetUserInformation } from '../features/auth/authSlice';
 
 export default function ChatContainer (props) {
 
-    const chat = props.chat
     const setOpenChat = props.setOpenChat
     const user = props.user
     const chats = props.allChats
+
 
 
     const dispatch = useDispatch()

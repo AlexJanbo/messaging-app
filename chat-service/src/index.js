@@ -32,12 +32,33 @@ const StartServer = async () => {
     })
     io.on('connection', (socket) => {
         console.log("a user connected")
-        socket.on('chat message', (msg) => {
-            console.log("Message: " + msg.text)
-            io.emit('chat message', msg)
+        socket.on('setup', (userData) => {
+            console.log(userData)
+            // socket.join(userData._id)
+            // socket.emit('connected')
+        })
+        socket.on('join chat', (chatId) => {
+            socket.join(chatId)
+            console.log(`User joined room ${chatId}`)
+        })
+        socket.on('chat message', (message) => {
+            console.log("Message: " + message.text)
+            io.emit('chat message', message)
+        })
+        socket.on('typing', (chatId, user) => {
+            console.log(`${user.username} is typing!`)
+            socket.in(chatId).emit('typing')
+        })
+        socket.on('stop typing', (chatId, user) => {
+            console.log('stopped typing')
+            socket.in(chatId).emit('stop typing')
         })
         socket.on('disconnect', () => {
             console.log('user disconnected')
+        })
+        socket.off('setup', () => {
+            console.log("User disconnected")
+            socket.leave(userData._id)
         })
     })
 }
