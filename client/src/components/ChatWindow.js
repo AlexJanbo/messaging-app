@@ -22,6 +22,7 @@ export default function ChatWindow(props) {
     const [ newMessage, setNewMessage ] = useState('')
     const [ messages, setMessages ] = useState([...previousMessages])
     const [ isTyping, setIsTyping ] = useState(false)
+    const [ typingUser, setTypingUser ] = useState('')
 
     
     // This useEffect is for setting up the socket io
@@ -48,7 +49,10 @@ export default function ChatWindow(props) {
         })
         
         // Displays when a chat member is currently typing
-        socket.on('typing', () => setIsTyping(true))
+        socket.on('typing', (userTyping) => {
+            setIsTyping(true)
+            setTypingUser(userTyping)
+        })
         socket.on('stop typing', () => setIsTyping(false))
         return () => socket.off('chat message')
     }, [socket])
@@ -144,6 +148,7 @@ export default function ChatWindow(props) {
                             </ListItem>
                             
                         ))}
+                        {(isTyping && typingUser.username !== user.username) && <Typography>{typingUser.username} is typing...</Typography>}
                     </List>
                     <div ref={messageEndRef} />
             </Grid>
