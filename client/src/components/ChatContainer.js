@@ -19,22 +19,11 @@ export default function ChatContainer (props) {
     // Input variable for adding user to one-to-one chat
     const [ memberUsername, setMemberUsername ] = useState('')
 
-    // Input variable for adding users to group chat
-    const [ memberUsernames, setMemberUsernames] = useState([])
-    
     
     const handleCreateChat = (e) => {
         e.preventDefault()
 
         dispatch(CreateChat({ user, memberUsername }))
-        dispatch(reset())
-        window.location.reload()
-    }
-
-    const handleCreateGroupChat = (e) => {
-        e.preventDefault()
-
-        dispatch(CreateGroupChat({ user, memberUsernames }))
         dispatch(reset())
         window.location.reload()
     }
@@ -78,22 +67,6 @@ export default function ChatContainer (props) {
                     </Button>
                 </FormControl>
             </Grid>
-            <Grid sx={{ display: "flex", flexDirection: "row"}}>
-                <FormControl >
-                    <TextField
-                        id="username"
-                        label="Username"
-                        type="text"
-                        name="username"
-                        value={memberUsername}
-                        onChange={(e) => setMemberUsername(e.target.value)}
-                    />
-                    <Button onClick={handleCreateChat}>
-                        Add user to chat!
-                    </Button>
-                </FormControl>
-            </Grid>
-
         </Grid>        
     )
 

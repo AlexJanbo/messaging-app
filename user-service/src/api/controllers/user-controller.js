@@ -81,6 +81,7 @@ const GetUserInformation = async(req, res) => {
 
         if(user) {
             res.status(200).json({
+                _id: user._id,
                 username: user.username,
                 email: user.email,
             })

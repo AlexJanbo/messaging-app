@@ -3,15 +3,14 @@ const Message = require('../../database/models/Message')
 const SendMessage = async (req, res) => {
 
     try {
-        console.log("ping")
         const { sender, text, chatId } = req.body
-        console.log(chatId)
+        console.log(sender)
         if(!text) {
             throw new Error("Please provide all required message information")
         }
         const message = await Message.create({
             sender: {
-                id: sender._id,
+                _id: sender.id,
                 username: sender.username,
                 email: sender.email
             },

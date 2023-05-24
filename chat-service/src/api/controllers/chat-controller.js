@@ -7,11 +7,9 @@ const axios = require('axios')
 // @access Private
 const CreateChat = async (req, res) => {
     try {
-        // user is the user object from chat creator
-        // username is string input that chat creator wishes to add to a chat
+
         const { user, memberUsername } = req.body
 
-        // Make sure that we have both the user and username
         if(!memberUsername || !user) {
             res.status(400)
             throw new Error("Chat members not found")
@@ -26,6 +24,7 @@ const CreateChat = async (req, res) => {
 
         // Sanitizing user information that will be saved to chats
         const creator = {
+            _id: user.id,
             username: user.username,
             email: user.email,
         }
@@ -44,6 +43,9 @@ const CreateChat = async (req, res) => {
     }
 }
 
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
 const GetChat = async (req, res) => {
     try {
         const { chatId } = req.body
@@ -58,6 +60,9 @@ const GetChat = async (req, res) => {
     }
 }
 
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
 const GetAllChats = async (req, res) => {
     try {
         const { username } = req.body
@@ -72,6 +77,9 @@ const GetAllChats = async (req, res) => {
     }
 }
 
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
 const DeleteChat = async (req, res) => {
     try {
         // Make sure to add a check to make sure only admin can delete chat
@@ -87,34 +95,11 @@ const DeleteChat = async (req, res) => {
     }
 }
 
-const CreateGroupChat = async (req, res) => {
-    try {
-        // user is the user object from chat creator
-        // username is string input that chat creator wishes to add to a chat
-        const { user, memberUsernames } = req.body
-
-        // Make sure that we have both the user and username
-        if(!memberUsernames || !user) {
-            res.status(400)
-            throw new Error("Chat members not found")
-        }
 
 
-        // Saving the chat to the database and returning status code 200 and chat as json
-        const chat = await Chat.create({
-            chatName: `${user.username}'s chat`,
-            members: [...memberUsernames, user.username],
-            admin: user.username,
-            isGroup: true
-        })
-        res.status(200).json({ chat })
-
-    } catch (error) {
-        res.status(404).json({ message: error.message })
-    }
-
-}
-
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
 const AddGroupMember = async (req, res) => {
 
     try {
@@ -129,25 +114,92 @@ const AddGroupMember = async (req, res) => {
             throw new Error("Member already in chat")
         }
 
-        
-
+        chat.members.push(memberUsername)
+        res.status(200).json(chat.members)
 
     } catch (error) {
         
+        res.status(404).json({ message: error.message})
     }
 
 }
 
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
 const RemoveGroupMember = async(req, res) => {
 
+    try {
+        const { chatId, memberUsername } = req.body
+        if(!chatId || !memberUsername ) {
+            throw new Error("Chat member not found")
+        }
+        
+        const chat = await Chat.findById(chatId)
+        
+        if(!chat.members.includes(memberUsername)) {
+            throw new Error("User not member of chat")
+        }
+    } catch (error) {
+        
+        res.status(404).json({ message: error.message})
+    }
 }
 
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
 const ChangeChatName = async (req, res) => {
 
+    try {
+        const { chatId, newName } = req.body
+        if(!chatId || !newName) {
+            throw new Error("Missing chat id or new name")
+        }
+        const chat = await Chat.findById(chatId)
+
+        if(chat.chatName === newName) {
+            throw new Error("New name same as old")
+        }
+
+        chat.chatName = newName
+        await chat.save()
+
+        res.status(200).json(chat.chatName)
+        
+    } catch (error) {
+        
+        res.status(404).json({ message: error.message })
+    }
 }
 
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
 const ChangeGroupAdmin = async (req, res) => {
 
+    try {
+
+        const { chatId, newAdmin } = req.body
+
+        if(!chatId || !newAdmin ) {
+            throw new Error("New admin not found")
+        }
+
+        const chat = await Chat.findById(chatId)
+
+        if(chat.admin === newAdmin.username) {
+            throw new Error('User is already admin')
+        }
+
+        chat.admin = newAdmin
+        await chat.save()
+
+        res.status(200).json(chat.admin)
+
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
 }
 
 module.exports = {
@@ -155,7 +207,6 @@ module.exports = {
     GetChat,
     GetAllChats,
     DeleteChat,
-    CreateGroupChat,
     AddGroupMember,
     RemoveGroupMember,
     ChangeChatName,

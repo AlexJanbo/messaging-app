@@ -131,10 +131,10 @@ export default function ChatWindow(props) {
     }
 
     return (
-        <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh"}}>
-            <Grid sx={{ display: "flex", backgroundColor: "#1976d2", borderBottom: "2px solid black" }}>
-                <Typography variant='h4' textAlign="center" color="white">Chat name</Typography>
+        <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh", overflow: "hidden"}}>
+            <Grid sx={{ display: "flex", backgroundColor: "#808080"}}>
                 <Button onClick={handleCloseChat} color="error">X</Button>
+                <Typography variant='h4' textAlign="center" color="white">Chat name</Typography>
                 <Button onClick={handleDeleteChat} color="error">Delete Chat</Button>
             </Grid>
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>

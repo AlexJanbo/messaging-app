@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const chatSchema = mongoose.Schema({
 
     chatName: { type: String},
-    isGroup: { type: Boolean, require: true, default: false},
     members: [{
+        _id: { type: mongoose.Schema.Types.ObjectId },
         email: { type: String},
         username: { type: String},
     }],
