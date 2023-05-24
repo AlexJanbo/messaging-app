@@ -2,7 +2,7 @@ import { Button, Fab, FormControl, FormLabel, Grid, Input, TextField, Typography
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreateChat, GetAllChats, reset } from '../features/chat/chatSlice';
+import { CreateChat, CreateGroupChat, GetAllChats, reset } from '../features/chat/chatSlice';
 import { GetUserInformation } from '../features/auth/authSlice';
 
 export default function ChatContainer (props) {
@@ -16,7 +16,11 @@ export default function ChatContainer (props) {
     const dispatch = useDispatch()
 
 
+    // Input variable for adding user to one-to-one chat
     const [ memberUsername, setMemberUsername ] = useState('')
+
+    // Input variable for adding users to group chat
+    const [ memberUsernames, setMemberUsernames] = useState([])
     
     
     const handleCreateChat = (e) => {
@@ -24,7 +28,15 @@ export default function ChatContainer (props) {
 
         dispatch(CreateChat({ user, memberUsername }))
         dispatch(reset())
-        // window.location.reload()
+        window.location.reload()
+    }
+
+    const handleCreateGroupChat = (e) => {
+        e.preventDefault()
+
+        dispatch(CreateGroupChat({ user, memberUsernames }))
+        dispatch(reset())
+        window.location.reload()
     }
 
 
@@ -66,6 +78,22 @@ export default function ChatContainer (props) {
                     </Button>
                 </FormControl>
             </Grid>
+            <Grid sx={{ display: "flex", flexDirection: "row"}}>
+                <FormControl >
+                    <TextField
+                        id="username"
+                        label="Username"
+                        type="text"
+                        name="username"
+                        value={memberUsername}
+                        onChange={(e) => setMemberUsername(e.target.value)}
+                    />
+                    <Button onClick={handleCreateChat}>
+                        Add user to chat!
+                    </Button>
+                </FormControl>
+            </Grid>
+
         </Grid>        
     )
 

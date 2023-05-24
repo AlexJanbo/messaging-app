@@ -61,12 +61,10 @@ const GetChat = async (req, res) => {
 const GetAllChats = async (req, res) => {
     try {
         const { username } = req.body
-
         if(!username) {
             res.status(400)
             throw new Error("User username not found")
         }
-
         const chat = await Chat.find({ 'members.username': username })
         res.status(200).json(chat)
     } catch (error) {
@@ -75,14 +73,68 @@ const GetAllChats = async (req, res) => {
 }
 
 const DeleteChat = async (req, res) => {
-
+    try {
+        // Make sure to add a check to make sure only admin can delete chat
+        const chatId = req.params.id
+        if(!chatId) {
+            throw new Error("Chat id not found")
+        }
+        const response = await Chat.findByIdAndRemove(chatId)
+        console.log(response)
+        res.status(200).json({ message: `Chat ${chatId} successfully deleted`})
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
 }
 
 const CreateGroupChat = async (req, res) => {
+    try {
+        // user is the user object from chat creator
+        // username is string input that chat creator wishes to add to a chat
+        const { user, memberUsernames } = req.body
+
+        // Make sure that we have both the user and username
+        if(!memberUsernames || !user) {
+            res.status(400)
+            throw new Error("Chat members not found")
+        }
+
+
+        // Saving the chat to the database and returning status code 200 and chat as json
+        const chat = await Chat.create({
+            chatName: `${user.username}'s chat`,
+            members: [...memberUsernames, user.username],
+            admin: user.username,
+            isGroup: true
+        })
+        res.status(200).json({ chat })
+
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
 
 }
 
 const AddGroupMember = async (req, res) => {
+
+    try {
+        const { chatId, memberUsername } = req.body
+        if(!chatId || !memberUsername) {
+            throw new Error("Chat members not found")
+        }
+
+        const chat = await Chat.findById(chatId)
+
+        if(chat.members.includes(memberUsername)) {
+            throw new Error("Member already in chat")
+        }
+
+        
+
+
+    } catch (error) {
+        
+    }
 
 }
 

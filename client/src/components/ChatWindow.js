@@ -5,6 +5,7 @@ import io from 'socket.io-client'
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
 import {  SendMessage, reset } from '../features/message/messageSlice';
+import { DeleteChat } from '../features/chat/chatSlice';
 
 export default function ChatWindow(props) {
 
@@ -116,6 +117,15 @@ export default function ChatWindow(props) {
         setOpenChat('')
     }
 
+    const handleDeleteChat = (e) => {
+        e.preventDefault()
+        dispatch(DeleteChat(chatId))
+        // setNewMessage('')
+        // setMessages([])
+        // setOpenChat('')
+        window.location.reload()
+    }
+
     if(isLoading) {
         return <CircularProgress sx={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}/>
     }
@@ -125,6 +135,7 @@ export default function ChatWindow(props) {
             <Grid sx={{ display: "flex", backgroundColor: "#1976d2", borderBottom: "2px solid black" }}>
                 <Typography variant='h4' textAlign="center" color="white">Chat name</Typography>
                 <Button onClick={handleCloseChat} color="error">X</Button>
+                <Button onClick={handleDeleteChat} color="error">Delete Chat</Button>
             </Grid>
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
                     <List>
