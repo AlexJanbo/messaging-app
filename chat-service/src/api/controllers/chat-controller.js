@@ -20,6 +20,7 @@ const CreateChat = async (req, res) => {
             username: memberUsername
         }
         const response = await axios.post('http://localhost:8000/api/users/profile', userData)
+        console.log(response)
         const chatMember = response.data
 
         // Sanitizing user information that will be saved to chats
@@ -199,6 +200,28 @@ const ChangeGroupAdmin = async (req, res) => {
 
     } catch (error) {
         res.status(400).json({ message: error.message })
+    }
+}
+
+// @desc Create a one on one chat
+// @route POST /api/chats/create-chat
+// @access Private
+const LeaveChat = async (req, res) => {
+
+    try {
+        const { chatId, user } = req.body
+        if(!chatId || !user) {
+            throw new Error("User not found")
+        }
+
+        const chat = await Chat.findById(chatId)
+        if(!chat) {
+            throw new Error("Chat not found")
+        }
+
+        
+    } catch (error) {
+        res.status(404).json({ message: error.message })
     }
 }
 

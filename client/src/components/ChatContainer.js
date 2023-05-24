@@ -1,16 +1,16 @@
-import { Button, Fab, FormControl, FormLabel, Grid, Input, TextField, Typography } from '@mui/material'
+import { Button, Fab, FormControl, FormControlLabel, FormLabel, Grid, Input, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
 import { CreateChat, CreateGroupChat, GetAllChats, reset } from '../features/chat/chatSlice';
 import { GetUserInformation } from '../features/auth/authSlice';
+import ChatIcon from '@mui/icons-material/Chat';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function ChatContainer (props) {
 
-    const setOpenChat = props.setOpenChat
-    const user = props.user
-    const chats = props.allChats
 
+    const { setOpenChat, user, chats } = props
 
 
     const dispatch = useDispatch()
@@ -37,14 +37,16 @@ export default function ChatContainer (props) {
                     <AddIcon />
                 </Fab> */}
             </Grid>
-            <Grid sx={{ display: "flex", flexDirection: "column", height: "70vh", overflowY: "auto", width: "100%"}}>
+            <Grid sx={{ display: "flex", flexDirection: "column", maxHeight: "70vh", overflowY: "auto", width: "100%"}}>
                 {chats.length > 0 
                 ?
                 chats.map((chat, index) => {
                     return (
-                        <Grid key={index} sx={{display: "flex", direction: "row", height: "10vh", margin: "10px", alignContent: "center"}}>
+                        <Grid key={index} sx={{display: "flex", direction: "row", height: "10vh", justifyContent: "center", alignItems: "center", borderBottom: "1px solid blue", flexShrink: 0}}>
                             <Typography> {chat.chatName}</Typography>
-                            <Button onClick={() => setOpenChat(chat._id)}>Open</Button>
+                            <Button onClick={() => setOpenChat(chat._id)}>
+                                <ChatIcon />
+                            </Button>
                         </Grid>
                     )
                 })
@@ -52,20 +54,20 @@ export default function ChatContainer (props) {
                 <Typography>No Chats</Typography>
             }
             </Grid>
-            <Grid sx={{ display: "flex", flexDirection: "row"}}>
-                <FormControl >
+            <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", paddingTop: "20px"}}>
+                <form>
                     <TextField
                         id="username"
-                        label="Username"
+                        label="Add user to chat"
                         type="text"
                         name="username"
                         value={memberUsername}
                         onChange={(e) => setMemberUsername(e.target.value)}
-                    />
-                    <Button onClick={handleCreateChat}>
-                        Add user to chat!
+                        />
+                    <Button type="submit" onClick={handleCreateChat}>
+                        <AddCircleIcon fontSize="large"/>
                     </Button>
-                </FormControl>
+                </form>
             </Grid>
         </Grid>        
     )

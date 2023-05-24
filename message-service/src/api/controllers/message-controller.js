@@ -43,12 +43,26 @@ const GetMessages = async (req, res) => {
     }
 }
 
-// const DeleteMessages = async (req, res ) => {
+const DeleteMessages = async (req, res ) => {
 
-// }
+    try {
+        const chatId = req.params.id
+
+        if(!chatId) {
+            throw new Error("Please provide the chat id")
+        }
+
+        const response = await Message.deleteMany({ "chatId": chatId })
+        console.log(response)
+        res.status(200).json({ message: "Chat messages deleted"})
+
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
 
 module.exports = {
     SendMessage,
     GetMessages,
-    // DeleteMessages
+    DeleteMessages
 }

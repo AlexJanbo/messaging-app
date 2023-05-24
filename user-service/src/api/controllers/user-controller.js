@@ -79,15 +79,20 @@ const GetUserInformation = async(req, res) => {
         const { username } = req.body
         const user = await FindUserByUsername(req.body.username)
 
-        if(user) {
+        if(!user) {
+            res.status(404).json({ message: "User not found"})
+        } else {
+            
             res.status(200).json({
                 _id: user._id,
                 username: user.username,
                 email: user.email,
             })
         }
+
+
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        res.status(404).json({ message: error.message })
     }
 }
 

@@ -20,7 +20,7 @@ export const SendMessage = createAsyncThunk('messages/send', async (messageData,
     }
 })
 
-
+// Gets all of the messages in a chat
 export const GetMessages = createAsyncThunk('messages/getAll', async (messageData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token
@@ -31,6 +31,16 @@ export const GetMessages = createAsyncThunk('messages/getAll', async (messageDat
     }
 })
 
+// Deletes all the messages in a chat
+export const DeleteMessages = createAsyncThunk('messages/delete', async (chatId, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await messageService.DeleteMessages(chatId, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
 
 export const messageSlice = createSlice({
     name: 'message',
@@ -67,6 +77,19 @@ export const messageSlice = createSlice({
                 state.messages = action.payload
             })
             .addCase(GetMessages.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(DeleteMessages.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(DeleteMessages.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.messages = action.payload
+            })
+            .addCase(DeleteMessages.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

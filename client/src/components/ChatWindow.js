@@ -4,15 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
-import {  SendMessage, reset } from '../features/message/messageSlice';
+import {  DeleteMessages, SendMessage, reset } from '../features/message/messageSlice';
 import { DeleteChat } from '../features/chat/chatSlice';
+import ChatMenu from './ChatMenu';
 
 export default function ChatWindow(props) {
 
     const dispatch = useDispatch()
 
-    const user = props.user
-    const { openChat, setOpenChat } = props
+    const { openChat, setOpenChat, user } = props
     const chatId = openChat
 
     const previousMessages = props.previousMessages
@@ -119,6 +119,7 @@ export default function ChatWindow(props) {
 
     const handleDeleteChat = (e) => {
         e.preventDefault()
+        dispatch(DeleteMessages(chatId))
         dispatch(DeleteChat(chatId))
         // setNewMessage('')
         // setMessages([])
@@ -132,10 +133,10 @@ export default function ChatWindow(props) {
 
     return (
         <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh", overflow: "hidden"}}>
-            <Grid sx={{ display: "flex", backgroundColor: "#808080"}}>
-                <Button onClick={handleCloseChat} color="error">X</Button>
+            <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", backgroundColor: "#808080", borderBottom: "2px solid black"}}>
+                <Button onClick={handleCloseChat} color="error">Close Chat</Button>
                 <Typography variant='h4' textAlign="center" color="white">Chat name</Typography>
-                <Button onClick={handleDeleteChat} color="error">Delete Chat</Button>
+                <ChatMenu />
             </Grid>
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
                     <List>

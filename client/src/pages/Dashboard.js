@@ -57,7 +57,7 @@ function Dashboard() {
           <Stack direction="column">
             <Navbar />
             <Stack direction="row">
-              <ChatContainer user={user} allChats={chats} openChat={openChat} setOpenChat={selectOpenChat}/>
+              <ChatContainer user={user} chats={chats} openChat={openChat} setOpenChat={selectOpenChat} isError={isError}/>
               {openChat ?
                 <ChatWindow user={user} previousMessages={messages} openChat={openChat} setOpenChat={selectOpenChat} />
                 :

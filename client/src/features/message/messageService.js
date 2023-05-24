@@ -28,9 +28,23 @@ const GetMessages = async(messageData, token) => {
     return response.data
 }
 
+const DeleteMessages = async(chatId, token) => {
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.delete(API_URL + "delete-messages/" + chatId, config)
+
+    return response.data
+}
+
 const messageService = {
     SendMessage,
     GetMessages,
+    DeleteMessages,
 }
 
 export default messageService
