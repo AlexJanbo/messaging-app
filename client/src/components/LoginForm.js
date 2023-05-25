@@ -59,9 +59,6 @@ export default function LoginForm() {
         noValidate
         autoComplete="off"
       >
-          <Typography variant="h2" color="#323232">
-              Messaging App
-          </Typography>
           <FormControl variant="standard">
               <TextField
               id="email"
@@ -84,9 +81,6 @@ export default function LoginForm() {
               />
               <Button type="submit" onClick={handleLogin}>
                 Login
-              </Button>
-              <Button href="/register" >
-                Sign Up
               </Button>
           </FormControl>
       </Box>

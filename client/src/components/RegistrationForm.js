@@ -111,9 +111,6 @@ export default function RegistrationForm() {
     noValidate
     autoComplete="off"
     >
-          <Typography variant="h2" color="#323232">
-              Messaging App
-          </Typography>
           <FormControl variant="standard">
               <TextField
                 id="username"
@@ -159,10 +156,7 @@ export default function RegistrationForm() {
 
               />
               <Button type="submit" onClick={handleRegistration}>
-                  Register
-              </Button>
-              <Button href="/">
-                  Back to login
+                  Sign up
               </Button>
           </FormControl>
       </Box>

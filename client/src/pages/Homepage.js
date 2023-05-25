@@ -1,6 +1,7 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
-import { Container, Paper } from "@mui/material";
+import { Container, Paper, Typography } from "@mui/material";
+import LoginTab from "../components/LoginTab";
 
 
 function Homepage() {
@@ -8,11 +9,16 @@ function Homepage() {
     <>
       <Paper square sx={{ backgroundColor: "#f9f8fa", height: "100vh"}} >
         <Container>
-          <LoginForm />
+          <Typography variant="h2" color="#323232">
+              Messaging App
+          </Typography>
+          
+          {/* <LoginForm /> */}
+          <LoginTab />
         </Container>
       </Paper>
     </>
-  )
+  );
 }
 
 export default Homepage
