@@ -37,7 +37,7 @@ const CreateChat = async (req, res) => {
             admin: creator.username,
             isGroup: false
         })
-        res.status(200).json({ chat })
+        res.status(200).json(chat)
 
     } catch (error) {
         res.status(404).json({ message: error.message })
@@ -224,6 +224,8 @@ const LeaveChat = async (req, res) => {
         res.status(404).json({ message: error.message })
     }
 }
+
+
 
 module.exports = {
     CreateChat,

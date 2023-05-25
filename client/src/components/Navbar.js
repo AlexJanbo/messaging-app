@@ -21,7 +21,7 @@ export default function Navbar() {
             <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center"}}>
                 <Grid>
                     <Toolbar>
-                        <Typography variant="h3">
+                        <Typography variant="h2" fontFamily="cavolini">
                             Messaging App
                         </Typography>
                     </Toolbar>

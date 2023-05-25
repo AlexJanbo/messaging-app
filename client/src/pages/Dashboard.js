@@ -2,11 +2,12 @@ import { Button, CircularProgress, Grid, Paper, Skeleton, Stack, Typography } fr
 import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import ChatWindow from '../components/ChatWindow'
-import ChatContainer from '../components/ChatContainer'
+import MyChats from '../components/MyChats'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { GetAllChats, reset } from '../features/chat/chatSlice'
 import { GetMessages } from '../features/message/messageSlice'
+import ChatContainer from '../components/ChatContainer'
 
 function Dashboard() {
 
@@ -25,18 +26,18 @@ function Dashboard() {
   }
   const chatId = openChat
 
-  useEffect(() => {
-    if(isError) {
-      console.log(message)
-    }
+  // useEffect(() => {
+  //   if(isError) {
+  //     console.log(message)
+  //   }
 
-    const username = user.username
-    dispatch(GetAllChats({ username }))
+  //   const username = user.username
+  //   dispatch(GetAllChats({ username }))
   
-    return () => {
-      dispatch(reset())
-    }
-  }, [user, navigate, isError, message, dispatch])
+  //   return () => {
+  //     dispatch(reset())
+  //   }
+  // }, [user, navigate, isError, message, dispatch, reset])
 
   useEffect(() => {
     if(chatId) {
@@ -57,9 +58,9 @@ function Dashboard() {
           <Stack direction="column">
             <Navbar />
             <Stack direction="row">
-              <ChatContainer user={user} chats={chats} openChat={openChat} setOpenChat={selectOpenChat} isError={isError}/>
+              <MyChats user={user} openChat={openChat} setOpenChat={selectOpenChat}/>
               {openChat ?
-                <ChatWindow user={user} previousMessages={messages} openChat={openChat} setOpenChat={selectOpenChat} />
+                <ChatContainer  user={user} previousMessages={messages} openChat={openChat} setOpenChat={selectOpenChat}/>
                 :
                 <Typography>Open a chat!</Typography>
               }
