@@ -13,8 +13,13 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import GroupsIcon from '@mui/icons-material/Groups';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ChatMembersModal from './ChatMembers';
+import { Button } from '@mui/material';
 
-export default function ChatMenu() {
+export default function ChatMenu(props) {
+
+  const { handleShowMembers, handleShowSettings } = props
+
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -26,10 +31,10 @@ export default function ChatMenu() {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title="Account settings">
+        <Tooltip title="Chat options">
           <IconButton
             onClick={handleClick}
-            size="small"
+            size="large"
             sx={{ ml: 2 }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
@@ -78,26 +83,24 @@ export default function ChatMenu() {
           <ListItemIcon>
             <GroupsIcon sx={{ height: 24, width: 24}} />
           </ListItemIcon>
-          Members
+          <Button onClick={handleShowMembers}>
+             View members
+          </Button>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <ManageAccountsIcon /> 
           </ListItemIcon>
-          Notifications
+          <Button onClick={handleShowSettings}>
+            Chat settings
+          </Button>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Leave chat
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
-          Edit chat
+          Leave chat
         </MenuItem>
       </Menu>
     </>

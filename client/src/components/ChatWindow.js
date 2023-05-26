@@ -110,12 +110,6 @@ export default function ChatWindow(props) {
         dispatch(reset())
     }
 
-    const handleCloseChat = (e) => {
-        e.preventDefault()
-        setNewMessage('')
-        setMessages([])
-        setOpenChat('')
-    }
 
     const handleDeleteChat = (e) => {
         e.preventDefault()
