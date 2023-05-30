@@ -53,6 +53,39 @@ export const DeleteChat = createAsyncThunk('chats/delete', async (chatId, thunkA
     }
 })
 
+// Leave a chat
+export const LeaveChat = createAsyncThunk('chats/leave', async (chatData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await chatService.LeaveChat(chatData, token)
+    } catch (error) {
+        const message = (error.reponse && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+// Add a user to chat
+export const AddGroupMember = createAsyncThunk('chats/addMember', async (chatData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await chatService.AddGroupMember(chatData, token)
+    } catch (error) {
+        const message = (error.reponse && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+// Remove a user from chat
+export const RemoveGroupMember = createAsyncThunk('chats/removeMember', async (chatData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await chatService.RemoveGroupMember(chatData, token)
+    } catch (error) {
+        const message = (error.reponse && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const chatSlice = createSlice({
     name: 'chat',
     initialState,
@@ -114,6 +147,45 @@ export const chatSlice = createSlice({
                 state.chats = action.payload
             })
             .addCase(DeleteChat.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(LeaveChat.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(LeaveChat.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.chats = action.payload
+            })
+            .addCase(LeaveChat.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(AddGroupMember.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(AddGroupMember.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.chats = action.payload
+            })
+            .addCase(AddGroupMember.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(RemoveGroupMember.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(RemoveGroupMember.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.chats = action.payload
+            })
+            .addCase(RemoveGroupMember.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

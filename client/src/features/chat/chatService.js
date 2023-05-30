@@ -54,11 +54,53 @@ const DeleteChat = async(chatId, token) => {
     return response.data
 }
 
+const LeaveChat = async(chatData, token) => {
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + "leave-chat/", chatData, config)
+
+    return response.data
+}
+
+const AddGroupMember = async(chatData, token) => {
+    
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + "add-group-member", chatData, config)
+
+    return response.data
+}
+
+const RemoveGroupMember = async(chatData, token) => {
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + "remove-group-member", chatData, config)
+
+    return response.data
+}
+
 const chatService = {
     CreateChat,
     CreateGroupChat,
     GetAllChats,
     DeleteChat,
+    LeaveChat,
+    AddGroupMember,
+    RemoveGroupMember,
 }
 
 export default chatService

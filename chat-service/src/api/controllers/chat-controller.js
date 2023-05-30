@@ -104,22 +104,31 @@ const DeleteChat = async (req, res) => {
 const AddGroupMember = async (req, res) => {
 
     try {
-        const { chatId, memberUsername } = req.body
-        if(!chatId || !memberUsername) {
+        const { chatId, username } = req.body
+        if(!chatId || !username) {
             throw new Error("Chat members not found")
         }
 
         const chat = await Chat.findById(chatId)
+        // console.log(chat)
 
-        if(chat.members.includes(memberUsername)) {
-            throw new Error("Member already in chat")
+        // Get chat member's user object from user microservice since client can not pass that information
+        const userData = {
+            username: username
         }
+        const response = await axios.post('http://localhost:8000/api/users/profile', userData)
+        const chatMember = response.data
 
-        chat.members.push(memberUsername)
-        res.status(200).json(chat.members)
+
+        // if(chat.members.includes(chatMember)) {
+        //     throw new Error("Member already in chat")
+        // }
+
+        chat.members.push(chatMember)
+        chat.save()
+        res.status(200).json({ message: "User successfully added to group"})
 
     } catch (error) {
-        
         res.status(404).json({ message: error.message})
     }
 
@@ -131,16 +140,30 @@ const AddGroupMember = async (req, res) => {
 const RemoveGroupMember = async(req, res) => {
 
     try {
-        const { chatId, memberUsername } = req.body
-        if(!chatId || !memberUsername ) {
+        const { chatId, username } = req.body
+        if(!chatId || !username ) {
             throw new Error("Chat member not found")
         }
         
         const chat = await Chat.findById(chatId)
+
         
-        if(!chat.members.includes(memberUsername)) {
-            throw new Error("User not member of chat")
+        // Get chat member's user object from user microservice since client can not pass that information
+        const userData = {
+            username: username
         }
+        const response = await axios.post('http://localhost:8000/api/users/profile', userData)
+        const chatMember = response.data
+
+
+        // if(!chat.members.includes(chatMember)) {
+        //     throw new Error("User not member of chat")
+        // }
+
+        chat.members = chat.members.filter((member) => member.username !== chatMember.username)
+        await chat.save()
+
+        res.status(200).json({ message: "User successfully removed from chat"})
     } catch (error) {
         
         res.status(404).json({ message: error.message})
@@ -213,11 +236,16 @@ const LeaveChat = async (req, res) => {
         if(!chatId || !user) {
             throw new Error("User not found")
         }
+        console.log(user.id)
 
         const chat = await Chat.findById(chatId)
         if(!chat) {
             throw new Error("Chat not found")
         }
+
+        chat.members = chat.members.filter((member) => member.id !== user.id)
+        await chat.save()
+        res.status(200).json({ message: "Successfully left chat"})
 
         
     } catch (error) {
@@ -232,6 +260,7 @@ module.exports = {
     GetChat,
     GetAllChats,
     DeleteChat,
+    LeaveChat,
     AddGroupMember,
     RemoveGroupMember,
     ChangeChatName,

@@ -66,8 +66,8 @@ export default function ChatContainer(props) {
                 </Grid>
             </Grid>
             {showMessages && <ChatWindow user={user} previousMessages={previousMessages} openChat={openChat} setOpenChat={setOpenChat} />}
-            {showMembers && <ChatMembers />}
-            {showSettings && <ChatSettings />}
+            {showMembers && <ChatMembers chatId={openChat}/>}
+            {showSettings && <ChatSettings user={user} chatId={openChat}/>}
         </Grid>
            
         </>
