@@ -26,6 +26,8 @@ function Dashboard() {
   }
   const chatId = openChat
 
+  const currentChat = chats.find((chat) => chat._id === chatId)
+
   // useEffect(() => {
   //   if(isError) {
   //     console.log(message)
@@ -60,7 +62,7 @@ function Dashboard() {
             <Stack direction="row">
               <MyChats user={user} openChat={openChat} setOpenChat={selectOpenChat}/>
               {openChat ?
-                <ChatContainer  user={user} previousMessages={messages} openChat={openChat} setOpenChat={selectOpenChat}/>
+                <ChatContainer currentChat={currentChat} user={user} chats={chats} previousMessages={messages} openChat={openChat} setOpenChat={selectOpenChat}/>
                 :
                 <Typography>Open a chat!</Typography>
               }

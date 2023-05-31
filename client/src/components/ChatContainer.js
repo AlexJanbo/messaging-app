@@ -6,11 +6,15 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useSelector } from 'react-redux';
 import ChatMembers from './ChatMembers';
 import ChatSettings from './ChatSettings';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function ChatContainer(props) {
 
-    const { user, previousMessages, openChat, setOpenChat } = props
+    const { user, previousMessages, openChat, setOpenChat, currentChat } = props
     const { isLoading } = useSelector((state) => state.message)
+
+
+
 
     const [ showMessages, setShowMessages ] = useState(true)
     const [ showMembers, setShowMembers ] = useState(false)
@@ -35,39 +39,31 @@ export default function ChatContainer(props) {
     }
 
 
-    const handleClose = (e) => {
-        e.preventDefault()
+    const handleClose = () => {
         setOpenChat('')
+        window.location.reload()
     }
 
-    console.log(showMessages)
 
     return (
         <>
         <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh", overflow: "hidden"}}>
             <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", backgroundColor: "#f8f9fa", borderBottom: "2px solid black"}}>
                 <Grid sx={{ width: "5vw"}}>
-                    {showMessages &&
-                        <Button onClick={handleClose} color="error" m={1} p={1}>
-                            Close chat
-                        </Button>
-                    }
-                    {(showMembers || showSettings) &&
-                        <Button onClick={handleShowMessages} m={1} p={1} >
-                            Back to chat
-                        </Button>
-                    }
+                    <Button onClick={handleClose} color="error" m={1} p={1}>
+                        <CloseIcon />
+                    </Button>
                 </Grid>
                 <Grid >
-                    <Typography variant='h4' align="center">Chat name</Typography>
+                    <Typography variant='h4' align="center">{currentChat.chatName}</Typography>
                 </Grid>
                 <Grid >
                     <ChatMenu handleShowMembers={handleShowMembers} handleShowSettings={handleShowSettings}/>
                 </Grid>
             </Grid>
             {showMessages && <ChatWindow user={user} previousMessages={previousMessages} openChat={openChat} setOpenChat={setOpenChat} />}
-            {showMembers && <ChatMembers chatId={openChat}/>}
-            {showSettings && <ChatSettings user={user} chatId={openChat}/>}
+            {showMembers && <ChatMembers members={currentChat.members} chatId={openChat} handleShowMessages={handleShowMessages}/>}
+            {showSettings && <ChatSettings user={user} chatId={openChat} handleShowMessages={handleShowMessages}/>}
         </Grid>
            
         </>

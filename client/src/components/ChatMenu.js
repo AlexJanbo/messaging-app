@@ -95,13 +95,6 @@ export default function ChatMenu(props) {
             Chat settings
           </Button>
         </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Leave chat
-        </MenuItem>
       </Menu>
     </>
   );

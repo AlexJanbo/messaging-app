@@ -8,6 +8,7 @@ import {  DeleteMessages, SendMessage, reset } from '../features/message/message
 import { DeleteChat } from '../features/chat/chatSlice';
 import ChatMenu from './ChatMenu';
 
+
 export default function ChatWindow(props) {
 
     const dispatch = useDispatch()
@@ -111,16 +112,6 @@ export default function ChatWindow(props) {
     }
 
 
-    const handleDeleteChat = (e) => {
-        e.preventDefault()
-        dispatch(DeleteMessages(chatId))
-        dispatch(DeleteChat(chatId))
-        // setNewMessage('')
-        // setMessages([])
-        // setOpenChat('')
-        window.location.reload()
-    }
-
     if(isLoading) {
         return <CircularProgress sx={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}/>
     }
@@ -129,7 +120,7 @@ export default function ChatWindow(props) {
         <>
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
                     <List>
-                        {messages?.map((message, index) => (
+                        {messages.map((message, index) => (
                             message.sender.username === user.username
                             ?
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-end"}}>

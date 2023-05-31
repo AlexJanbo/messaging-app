@@ -1,12 +1,15 @@
-import { Button, Grid, Typography } from '@mui/material'
-import React from 'react'
+import { Button, Grid, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import { DeleteMessages } from '../features/message/messageSlice'
-import { DeleteChat, LeaveChat } from '../features/chat/chatSlice'
+import { ChangeChatAdmin, ChangeChatName, DeleteChat, LeaveChat } from '../features/chat/chatSlice'
 import { useDispatch } from 'react-redux'
 
 export default function ChatSettings(props) {
   
-  const { chatId, user } = props
+  const { chatId, user, handleShowMessages } = props
+  const [ newChatName, setNewChatName ] = useState()
+  const [ newAdminUsername, setNewAdminUsername] = useState()
+
   const dispatch = useDispatch()
 
   const handleDeleteChat = (e) => {
@@ -22,8 +25,20 @@ export default function ChatSettings(props) {
     window.location.reload()
   }
 
+  const handleChangeChatName = (e) => {
+    e.preventDefault()
+    dispatch(ChangeChatName({ chatId, newChatName}))
+    window.location.reload()
+  }
+
+  const handleChangeChatAdmin = (e) => {
+    e.preventDefault()
+    dispatch(ChangeChatAdmin({ chatId, newAdminUsername }))
+    window.location.reload()
+  }
+
   return (
-    <Grid sx={{display: "flex", height: "70vh", backgroundColor: "#f6f6f6", width: "100%", justifyContent: "center", alignItems: "center" }}>
+    <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#f6f6f6", width: "100%", justifyContent: "center", alignItems: "center" }}>
       <Typography>Settings</Typography>
       <Button onClick={handleLeaveChat}>
         Leave chat
@@ -31,6 +46,40 @@ export default function ChatSettings(props) {
       <Button onClick={handleDeleteChat}>
         Delete chat
       </Button>
+      <Grid>
+        <form>
+          <TextField
+              id="newName"
+              label="New chat name"
+              type="text"
+              name="newChat"
+              value={newChatName}
+              onChange={(e) => setNewChatName(e.target.value)}
+              />
+          <Button type="submit" onClick={handleChangeChatName}>
+              Change!
+          </Button>
+        </form>
+      </Grid>
+      <Grid>
+        <form>
+          <TextField
+            id="newAdmin"
+            label="New admin username"
+            type="text"
+            name="newAdmin"
+            value={newAdminUsername}
+            onChange={(e) => setNewAdminUsername(e.target.value)}
+          />
+          <Button type="submit" onClick={handleChangeChatAdmin}>
+            Change!
+          </Button>
+        </form>
+      </Grid>
+      <Button onClick={handleShowMessages}>
+        Back to chat
+      </Button>
+
     </Grid>
   )
 }

@@ -15,13 +15,17 @@ export default function Navbar() {
         navigate('/')
     }
 
+    const handleClick = () => {
+        window.location.reload()
+    }
+
   return (
     <>
         <AppBar position="static" sx={{ height: "10vh", maxWidth: "100vw"}}>
             <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center"}}>
                 <Grid>
                     <Toolbar>
-                        <Typography variant="h2" fontFamily="cavolini">
+                        <Typography variant="h2" fontFamily="cavolini" onClick={handleClick} >
                             Messaging App
                         </Typography>
                     </Toolbar>

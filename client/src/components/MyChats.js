@@ -7,6 +7,7 @@ import { GetUserInformation } from '../features/auth/authSlice';
 import ChatIcon from '@mui/icons-material/Chat';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
+
 export default function MyChats (props) {
 
 
@@ -38,11 +39,11 @@ export default function MyChats (props) {
         dispatch(CreateChat({ user, memberUsername }))
     }
 
+
     // if(isLoading) {
     //     return <CircularProgress sx={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}/>
     // }
     
-    console.log(chats)
     
     return (
         <Grid sx={{display: "flex", flexDirection: "column", height: "90vh", width: "30vw", border: "2px solid black", margin: "0", boxShadow: "2px"}}>
@@ -52,47 +53,40 @@ export default function MyChats (props) {
                     <AddIcon />
                 </Fab> */}
             </Grid>
-            {
-                isLoading 
+            <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", maxHeight: "70vh", overflowY: "auto", width: "100%"}}>
+                {chats.length > 0 
                 ?
-                <CircularProgress sx={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}/>
-                :
-                <Grid>
-                    <Grid sx={{ display: "flex", flexDirection: "column", maxHeight: "70vh", overflowY: "auto", width: "100%"}}>
-                        {chats.length > 0 
-                        ?
-                        chats.map((chat) => {
-                            return (
-                                <Grid key={chat._id} sx={{display: "flex", direction: "row", height: "10vh", justifyContent: "center", alignItems: "center", borderBottom: "1px solid blue", flexShrink: 0}}>
-                                    <Typography> {chat.chatName}</Typography>
-                                    <Button onClick={() => setOpenChat(chat._id)}>
-                                        <ChatIcon />
-                                    </Button>
-                                </Grid>
-                            )
-                        })
-                        :
-                        <Typography>No Chats</Typography>
-                    }
-                    </Grid>
-                    <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "center", paddingTop: "20px"}}>
-                        <form>
-                            <TextField
-                                id="username"
-                                label="Add user to chat"
-                                type="text"
-                                name="username"
-                                value={memberUsername}
-                                onChange={(e) => setMemberUsername(e.target.value)}
-                                />
-                            <Button type="submit" onClick={handleCreateChat}>
-                                <AddCircleIcon fontSize="large"/>
+                chats.map((chat) => {
+                    return (
+                        <Grid onClick={() => setOpenChat(chat._id)} key={chat._id} sx={{display: "flex", direction: "row", height: "10vh", justifyContent: "space-evenly", alignItems: "center", borderBottom: "1px solid blue", flexShrink: 0}}>
+                            <Typography> {chat.chatName}</Typography>
+                            <Button onClick={() => setOpenChat(chat._id)}>
+                               <ChatIcon />
                             </Button>
-                        </form>
-                    </Grid>
+                        </Grid>
+                    )
+                })
+                :
+                <Grid sx={{display: "flex", flexDirection: "row", height: "10vh", justifyContent: "center", marginTop: "10px"}}>
+                    <Typography>No Chats</Typography>
                 </Grid>
-                
-            } 
+                }
+                <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-end", alignContent: "flex-end", paddingTop: "20px"}}>
+                    <form>
+                        <TextField
+                            id="username"
+                            label="Add user to chat"
+                            type="text"
+                            name="username"
+                            value={memberUsername}
+                            onChange={(e) => setMemberUsername(e.target.value)}
+                            />
+                        <Button type="submit" onClick={handleCreateChat}>
+                            <AddCircleIcon fontSize="large"/>
+                        </Button>
+                    </form>
+                </Grid>
+            </Grid>
         </Grid>        
     )
 

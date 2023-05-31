@@ -10,9 +10,10 @@ export default function ChatMembers(props) {
 
   const dispatch = useDispatch()
 
-  const { chatId } = props
+  const { chatId, members, handleShowMessages } = props
   const [ username, setUsername ] = useState('')
   const [ removeUsername, setRemoveUsername ] = useState('')
+
 
   const handleAddMember = () => {
     dispatch(AddGroupMember({ chatId, username }))
@@ -25,6 +26,9 @@ export default function ChatMembers(props) {
   return (
     <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#f6f6f6", width: "100%", justifyContent: "center", alignItems: "center" }}>
       <Typography>Members</Typography>
+      {members.map((member) => {
+        return <Typography>{member.username}</Typography>
+      })}
         <form>
           <TextField
               id="username"
@@ -51,6 +55,9 @@ export default function ChatMembers(props) {
             <RemoveIcon fontSize="large"/>
           </Button>
         </form>
+        <Button onClick={handleShowMessages}>
+          Back to chat
+        </Button>
     </Grid>
   )
 }

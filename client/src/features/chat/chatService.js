@@ -93,6 +93,32 @@ const RemoveGroupMember = async(chatData, token) => {
     return response.data
 }
 
+const ChangeChatName = async(chatData, token) => {
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + "change-chat-name", chatData, config)
+
+    return response.data
+}
+
+const ChangeChatAdmin = async(chatData, token) => {
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + "change-chat-admin", chatData, config)
+
+    return response.data
+}
+
 const chatService = {
     CreateChat,
     CreateGroupChat,
@@ -101,6 +127,8 @@ const chatService = {
     LeaveChat,
     AddGroupMember,
     RemoveGroupMember,
+    ChangeChatName,
+    ChangeChatAdmin,
 }
 
 export default chatService

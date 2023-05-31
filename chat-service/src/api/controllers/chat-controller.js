@@ -176,17 +176,19 @@ const RemoveGroupMember = async(req, res) => {
 const ChangeChatName = async (req, res) => {
 
     try {
-        const { chatId, newName } = req.body
-        if(!chatId || !newName) {
+
+        const { chatId, newChatName } = req.body
+        console.log(newChatName)
+        if(!chatId || !newChatName) {
             throw new Error("Missing chat id or new name")
         }
         const chat = await Chat.findById(chatId)
 
-        if(chat.chatName === newName) {
+        if(chat.chatName === newChatName) {
             throw new Error("New name same as old")
         }
 
-        chat.chatName = newName
+        chat.chatName = newChatName
         await chat.save()
 
         res.status(200).json(chat.chatName)
@@ -200,29 +202,28 @@ const ChangeChatName = async (req, res) => {
 // @desc Create a one on one chat
 // @route POST /api/chats/create-chat
 // @access Private
-const ChangeGroupAdmin = async (req, res) => {
+const ChangeChatAdmin = async (req, res) => {
 
     try {
+        const { chatId, newAdminUsername } = req.body
 
-        const { chatId, newAdmin } = req.body
-
-        if(!chatId || !newAdmin ) {
+        if(!chatId || !newAdminUsername) {
             throw new Error("New admin not found")
         }
 
         const chat = await Chat.findById(chatId)
 
-        if(chat.admin === newAdmin.username) {
+        if(chat.admin === newAdminUsername) {
             throw new Error('User is already admin')
         }
 
-        chat.admin = newAdmin
+        chat.admin = newAdminUsername
         await chat.save()
 
-        res.status(200).json(chat.admin)
+        res.status(200).json({ message: "Successfully changed admin"})
 
     } catch (error) {
-        res.status(400).json({ message: error.message })
+        res.status(404).json({ message: error.message })
     }
 }
 
@@ -264,5 +265,5 @@ module.exports = {
     AddGroupMember,
     RemoveGroupMember,
     ChangeChatName,
-    ChangeGroupAdmin,
+    ChangeChatAdmin,
 }

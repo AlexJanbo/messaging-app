@@ -86,6 +86,29 @@ export const RemoveGroupMember = createAsyncThunk('chats/removeMember', async (c
     }
 })
 
+// Change chat name
+export const ChangeChatName = createAsyncThunk('chats/changeName', async (chatData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await chatService.ChangeChatName(chatData, token)
+    } catch (error) {
+        const message = (error.reponse && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+// Change chat admin
+export const ChangeChatAdmin = createAsyncThunk('chats/changeAdmin', async (chatData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await chatService.ChangeChatAdmin(chatData, token)
+    } catch (error) {
+        const message = (error.reponse && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+
 export const chatSlice = createSlice({
     name: 'chat',
     initialState,
@@ -186,6 +209,32 @@ export const chatSlice = createSlice({
                 state.chats = action.payload
             })
             .addCase(RemoveGroupMember.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(ChangeChatName.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(ChangeChatName.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.chats = action.payload
+            })
+            .addCase(ChangeChatName.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(ChangeChatAdmin.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(ChangeChatAdmin.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.chats = action.payload
+            })
+            .addCase(ChangeChatAdmin.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
