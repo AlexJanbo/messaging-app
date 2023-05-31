@@ -91,13 +91,16 @@ export default function RegistrationForm() {
     if(passwordMatch() && validateEmail() && validatePassword() && validateUsername()) {
 
       dispatch(RegisterUser({username, email, password}))
-      navigate('/dashboard')
       
     } 
   }
   
   if(isLoading) {
     <CircularProgress />
+  }
+
+  if(isSuccess) {
+    navigate('/dashboard')
   }
   
   

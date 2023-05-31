@@ -43,6 +43,16 @@ export const GetUserInformation = createAsyncThunk('auth/getUser', async (userDa
     }
 }) 
 
+export const ChangeProfilePicture = createAsyncThunk('auth/changeProfilePicture', async (userData, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await authService.ChangeProfilePicture(userData, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -100,6 +110,19 @@ export const authSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
                 state.user = null
+            })
+            .addCase(ChangeProfilePicture.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(ChangeProfilePicture.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.user = action.payload
+            })
+            .addCase(ChangeProfilePicture.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
             })
     }
 })

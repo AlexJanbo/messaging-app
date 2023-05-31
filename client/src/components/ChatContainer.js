@@ -39,7 +39,8 @@ export default function ChatContainer(props) {
     }
 
 
-    const handleClose = () => {
+    const handleClose = (e) => {
+        e.preventDefault()
         setOpenChat('')
         window.location.reload()
     }

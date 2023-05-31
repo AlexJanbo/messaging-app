@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { GetAllChats, reset } from '../features/chat/chatSlice'
 import { GetMessages } from '../features/message/messageSlice'
 import ChatContainer from '../components/ChatContainer'
+import ProfileWindow from '../components/ProfileWindow'
 
 function Dashboard() {
 
@@ -20,6 +21,8 @@ function Dashboard() {
   const { chats, isError, message} = useSelector((state) => state.chat)
   const { messages, isLoading } = useSelector((state) => state.message)
 
+  const [ openProfile, setOpenProfile ] = useState(false)
+
   const [ openChat, setOpenChat ] = useState('')
   const selectOpenChat = (chatId) => {
     setOpenChat(chatId)
@@ -28,18 +31,6 @@ function Dashboard() {
 
   const currentChat = chats.find((chat) => chat._id === chatId)
 
-  // useEffect(() => {
-  //   if(isError) {
-  //     console.log(message)
-  //   }
-
-  //   const username = user.username
-  //   dispatch(GetAllChats({ username }))
-  
-  //   return () => {
-  //     dispatch(reset())
-  //   }
-  // }, [user, navigate, isError, message, dispatch, reset])
 
   useEffect(() => {
     if(chatId) {
@@ -58,7 +49,7 @@ function Dashboard() {
 
         <Paper square sx={{ backgroundColor: "#f9f8fa", height: "100vh"}} >
           <Stack direction="column">
-            <Navbar />
+            <Navbar user={user}/>
             <Stack direction="row">
               <MyChats user={user} openChat={openChat} setOpenChat={selectOpenChat}/>
               {openChat ?

@@ -36,11 +36,23 @@ const GetUserInformation = async (userData) => {
     return response.data
 }
 
+const ChangeProfilePicture = async(userData, token) => {
+    
+    const config = {
+        Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.put(API_URL + 'change-profile-picture', userData, config)
+
+    return response.data
+}
+
 const authService = {
     RegisterUser,
     LoginUser,
     LogoutUser,
     GetUserInformation,
+    ChangeProfilePicture,
 }
 
 export default authService

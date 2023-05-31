@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import PrivateRoute from './components/PrivateRoute'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { lightTheme } from './theme'
+import Profile from './pages/Profile'
 
 export default function App() {
 
@@ -23,7 +24,15 @@ export default function App() {
                             <PrivateRoute user={user}>
                                 <Dashboard />
                             </PrivateRoute> 
-                        } />
+                        } 
+                    />
+                    <Route exact path='/profile/:userId'
+                        element={
+                            <PrivateRoute user={user}>
+                                <Profile />
+                            </PrivateRoute>
+                        } 
+                    />
                     <Route path='*' element={<Navigate to='/dashboard' />}/>
                 </Routes>
             </Router>

@@ -1,30 +1,23 @@
 const { GenerateHashedPassword, ValidatePassword, GenerateSignedJWT } = require('../../utils/index')
 const { CreateUser, EmailInUse, FindUserByEmail, UsernameInUse, FindUserById } = require('../../database/repository/user-repository')
 const { FindUserByUsername } = require('../../database/repository/user-repository')
-// Goals:
-// Try to include business logic only
-// No database operations and try to use reusable functions
+const User = require('../../database/models/User')
 
 
-// @desc Register a new user
-// @route POST /api/user/register
-// @access Public
 const RegisterUser = async (req, res) => {
     try {
-        const { username, email, password  } = req.body
+
+        const { username, email, password} = req.body
 
         if(!username || !email || !password) {
-            res.status(400)
-            throw new Error("Please fill in all fields")
+            res.status(400).json({ message: "Please fill in all fields"})
         }
         if(await EmailInUse(email)) {
-            res.status(400)
-            throw new Error("Email already in use")
+            res.status(400).json({ message: "Email already in use"})
         }
         
         if(await UsernameInUse(username)) {
-            res.status(400)
-            throw new Error("Email already in use")
+            res.status(400).json({ message: "Username already in use"})
         }
         
         const hashedPassword = await GenerateHashedPassword(password)
@@ -42,9 +35,6 @@ const RegisterUser = async (req, res) => {
 }
 
 
-// @desc Login a user
-// @route POST /api/user/login
-// @access Public
 const LoginUser = async(req, res) => {
     try {
         const { email, password } = req.body
@@ -60,6 +50,7 @@ const LoginUser = async(req, res) => {
                 id: foundUser._id,
                 username: foundUser.username,
                 email: foundUser.email,
+                image: foundUser.image,
                 token: GenerateSignedJWT(foundUser._id)
             })
         } else {
@@ -71,9 +62,6 @@ const LoginUser = async(req, res) => {
 }
 
 
-// @desc Get a user information 
-// @route POST /api/user/profile/ 
-// @access Public
 const GetUserInformation = async(req, res) => {
     try {
         const { username } = req.body
@@ -81,23 +69,52 @@ const GetUserInformation = async(req, res) => {
 
         if(!user) {
             res.status(404).json({ message: "User not found"})
-        } else {
+        } 
             
-            res.status(200).json({
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-            })
-        }
-
+        res.status(200).json({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+        })
 
     } catch (error) {
         res.status(404).json({ message: error.message })
     }
 }
+ 
+
+const ChangeProfilePicture = async(req, res) => {
+    try {
+        const { image, userId } = req.body
+        const user = await FindUserById(userId)
+
+        if(!user) {
+            res.status(404).json({ message: "Invalid user"})
+        }
+        if(!image) {
+            res.status(404).json({ message: "Image not found"})
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            image: req.body.image
+        })
+
+        res.status(200).json({
+            id: foundUser._id,
+            username: foundUser.username,
+            email: foundUser.email,
+            image: foundUser.image,
+            token: GenerateSignedJWT(foundUser._id)
+        })
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 
 module.exports = {
     RegisterUser,
     LoginUser,
     GetUserInformation,
+    ChangeProfilePicture,
 }
