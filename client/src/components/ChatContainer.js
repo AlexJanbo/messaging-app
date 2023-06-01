@@ -1,17 +1,20 @@
-import { Button, Grid, Typography } from '@mui/material'
+import { Button, Grid, Skeleton, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import ChatMenu from './ChatMenu'
 import ChatWindow from './ChatWindow'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ChatMembers from './ChatMembers';
 import ChatSettings from './ChatSettings';
 import CloseIcon from '@mui/icons-material/Close';
+import { reset } from '../features/chat/chatSlice'
 
 export default function ChatContainer(props) {
 
     const { user, previousMessages, openChat, setOpenChat, currentChat } = props
     const { isLoading } = useSelector((state) => state.message)
+
+    const dispatch = useDispatch()
 
 
 
@@ -42,9 +45,16 @@ export default function ChatContainer(props) {
     const handleClose = (e) => {
         e.preventDefault()
         setOpenChat('')
-        window.location.reload()
+        dispatch(reset)
     }
 
+    if(isLoading) {
+        return (
+            <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh", overflow: "hidden"}}>
+                <Skeleton variant="rectangular" height="100%" width="100%"/>
+            </Grid>
+        )
+    }
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Fab, FormControl, FormControlLabel, FormLabel, Grid, Input, TextField, Typography } from '@mui/material'
+import { Button, CircularProgress, Fab, FormControl, FormControlLabel, FormLabel, Grid, Input, Skeleton, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,9 +40,13 @@ export default function MyChats (props) {
     }
 
 
-    // if(isLoading) {
-    //     return <CircularProgress sx={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}/>
-    // }
+    if(isLoading) {
+        return (
+            <Grid sx={{display: "flex", flexDirection: "column", height: "90vh", width: "30vw", border: "2px solid black", margin: "0", boxShadow: "2px"}}>
+                <Skeleton variant="rectangular" height="100%" width="100%" />
+            </Grid>
+        )
+    }
     
     
     return (

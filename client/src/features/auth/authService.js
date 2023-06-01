@@ -21,7 +21,6 @@ const LoginUser = async (userData) => {
     if(response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
     }
-    console.log(response.data)
     return response.data
 }
 
@@ -44,6 +43,9 @@ const ChangeProfilePicture = async(userData, token) => {
 
     const response = await axios.put(API_URL + 'change-profile-picture', userData, config)
 
+    if(response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+    }
     return response.data
 }
 

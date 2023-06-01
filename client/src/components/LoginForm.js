@@ -21,7 +21,6 @@ export default function LoginForm() {
     const { email, password } = formData
 
     const { user, isSuccess, isLoading, message, isError } = useSelector((state) => state.auth)
-    console.log(isError)
 
     useEffect(() => {
       if(isError) {

@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Divider, FormControl, Grid, Input, List, ListItem, TextField, Typography } from '@mui/material'
+import { Avatar, Button, CircularProgress, Divider, FormControl, Grid, Input, List, ListItem, Skeleton, TextField, Typography } from '@mui/material'
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import io from 'socket.io-client'
@@ -7,6 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import {  DeleteMessages, SendMessage, reset } from '../features/message/messageSlice';
 import { DeleteChat } from '../features/chat/chatSlice';
 import ChatMenu from './ChatMenu';
+import defaultAvatar from '../images/default-avatar.png'
 
 
 export default function ChatWindow(props) {
@@ -112,15 +113,11 @@ export default function ChatWindow(props) {
     }
 
 
-    if(isLoading) {
-        return <CircularProgress sx={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}/>
-    }
-
     return (
         <>
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
                     <List>
-                        {messages.map((message, index) => (
+                        {messages?.map((message, index) => (
                             message.sender.username === user.username
                             ?
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-end"}}>
@@ -132,10 +129,15 @@ export default function ChatWindow(props) {
                             </ListItem>
                             :
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-start"}}>
-                                <PersonIcon />
+                                <Avatar 
+                                    display="inline-block"
+                                    src={message.sender.image ? message.sender.image : defaultAvatar}
+                                    alt="Profile Avatar"
+                                    sx={{ height: 24, width: 24}}
+                                />
                                 <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word"}}>
-                                    <Typography sx={{ textDecoration: "underline"}}>{message.sender.username}: </Typography>
-                                    <Typography sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
+                                    <Typography >{message.sender.username}</Typography>
+                                    <Typography variant="h4" sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
                                 </Grid>
                             </ListItem>
                             

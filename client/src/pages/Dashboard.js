@@ -29,7 +29,7 @@ function Dashboard() {
   }
   const chatId = openChat
 
-  const currentChat = chats.find((chat) => chat._id === chatId)
+  const currentChat = chats?.find((chat) => chat._id === chatId)
 
 
   useEffect(() => {
@@ -40,9 +40,7 @@ function Dashboard() {
   
 
 
-  if(isLoading) {
-    return <CircularProgress sx={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}/>
-  }
+
 
   return (
     <>
@@ -51,11 +49,14 @@ function Dashboard() {
           <Stack direction="column">
             <Navbar user={user}/>
             <Stack direction="row">
+              {isLoading && <Skeleton variant="rectangular" height="70vh" />}
               <MyChats user={user} openChat={openChat} setOpenChat={selectOpenChat}/>
               {openChat ?
                 <ChatContainer currentChat={currentChat} user={user} chats={chats} previousMessages={messages} openChat={openChat} setOpenChat={selectOpenChat}/>
                 :
-                <Typography>Open a chat!</Typography>
+                <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "70vw"}}>
+                  <Typography>Open a chat!</Typography>
+                </Grid>
               }
             </Stack>
           </Stack>

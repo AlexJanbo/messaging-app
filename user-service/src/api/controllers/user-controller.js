@@ -100,11 +100,11 @@ const ChangeProfilePicture = async(req, res) => {
         })
 
         res.status(200).json({
-            id: foundUser._id,
-            username: foundUser.username,
-            email: foundUser.email,
-            image: foundUser.image,
-            token: GenerateSignedJWT(foundUser._id)
+            id: updatedUser._id,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            image: updatedUser.image,
+            token: GenerateSignedJWT(updatedUser._id)
         })
     } catch (error) {
         res.status(404).json({ message: error.message })
