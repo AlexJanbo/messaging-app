@@ -111,10 +111,21 @@ const ChangeProfilePicture = async(req, res) => {
     }
 }
 
+const GetAllUsers = async(req, res) => {
+    try {
+        console.log("ping")
+        const allUsers = await User.find({})
+        res.status(200).json(allUsers)
+    } catch (error) {
+        res.status(404).json({ message: error.message})
+    }
+}
+
 
 module.exports = {
     RegisterUser,
     LoginUser,
     GetUserInformation,
     ChangeProfilePicture,
+    GetAllUsers,
 }

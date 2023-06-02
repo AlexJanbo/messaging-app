@@ -33,7 +33,7 @@ const StartServer = async () => {
     io.on('connection', (socket) => {
         console.log("a user connected")
         socket.on('setup', (userData) => {
-            console.log(userData)
+            // console.log(userData)
             // socket.join(userData._id)
             // socket.emit('connected')
         })

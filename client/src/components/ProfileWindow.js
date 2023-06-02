@@ -16,8 +16,10 @@ export default function ProfileWindow(props) {
                     <Typography variant='h4' align="center">Profile</Typography>
                 </Grid>
             </Grid>
-            <ProfilePicture user={user} />
-            <ProfileInformation user={user} />
+            <Grid>
+              <ProfilePicture user={user} />
+              <ProfileInformation user={user} />
+            </Grid>
     </Grid>
   )
 }

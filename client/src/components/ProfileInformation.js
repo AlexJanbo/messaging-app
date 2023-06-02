@@ -12,6 +12,7 @@ export default function ProfileInformation(props) {
             
             <Typography>{user.username}</Typography>
             <Typography>{user.email}</Typography>
+            <Typography>{user.createdAt}</Typography>
 
         </Grid>
     </>

@@ -1,5 +1,5 @@
 const express = require('express')
-const { RegisterUser, LoginUser, GetUserInformation, ChangeProfilePicture } = require('../controllers/user-controller')
+const { RegisterUser, LoginUser, GetUserInformation, ChangeProfilePicture, GetAllUsers } = require('../controllers/user-controller')
 const { Authenticate } = require('../middleware/authentication')
 const { LimitLoginAttempts } = require('../middleware/limit-login-attempts')
 
@@ -10,6 +10,7 @@ router.route('/register').post(RegisterUser)
 router.route('/login').post(LimitLoginAttempts, LoginUser)
 router.route('/profile').post(GetUserInformation)
 router.route('/change-profile-picture').put(ChangeProfilePicture)
+router.route('/get-all-users').get(GetAllUsers)
 
 
 module.exports = router

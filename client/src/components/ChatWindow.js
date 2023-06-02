@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
-import {  DeleteMessages, SendMessage, reset } from '../features/message/messageSlice';
+import {  DeleteMessages, GetMessages, SendMessage, reset } from '../features/message/messageSlice';
 import { DeleteChat } from '../features/chat/chatSlice';
 import ChatMenu from './ChatMenu';
 import defaultAvatar from '../images/default-avatar.png'
@@ -17,7 +17,8 @@ export default function ChatWindow(props) {
     const { openChat, setOpenChat, user } = props
     const chatId = openChat
 
-    const previousMessages = props.previousMessages
+
+    const previousMessages = useSelector((state) => state.message.messages)
     const { isLoading } = useSelector((state) => state.message)
 
     
@@ -98,12 +99,14 @@ export default function ChatWindow(props) {
         if(!newMessage) {
             return
         }
+
         socket.emit('stop typing', chatId)
-        socket.emit('chat message', {
+        const data = {
             sender: user,
             text: newMessage,
-            chatId: chatId,
-        }, chatId)
+            chatId: chatId
+        }
+        socket.emit('chat message', data, chatId)
         dispatch(SendMessage({
             sender: user,
             text: newMessage,
@@ -112,20 +115,29 @@ export default function ChatWindow(props) {
         dispatch(reset())
     }
 
+    if(isLoading) {
+        return <Skeleton />
+    }
+
 
     return (
         <>
             <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
                     <List>
-                        {messages?.map((message, index) => (
+                        {messages.map((message, index) => (
                             message.sender.username === user.username
                             ?
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-end"}}>
 
                                 <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word"}}>
-                                    <Typography sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
+                                    <Typography variant="h5" sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
                                 </Grid>
-                                <PersonIcon />
+                                <Avatar
+                                    display="inline-block"
+                                    src={user.image ? user.image : defaultAvatar}
+                                    alt="Profile Avatar"
+                                    sx={{ height: 24, width: 24}}
+                                />
                             </ListItem>
                             :
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-start"}}>
@@ -137,7 +149,7 @@ export default function ChatWindow(props) {
                                 />
                                 <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word"}}>
                                     <Typography >{message.sender.username}</Typography>
-                                    <Typography variant="h4" sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
+                                    <Typography variant="h5" sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
                                 </Grid>
                             </ListItem>
                             

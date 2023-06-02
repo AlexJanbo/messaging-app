@@ -8,6 +8,7 @@ import ChatMembers from './ChatMembers';
 import ChatSettings from './ChatSettings';
 import CloseIcon from '@mui/icons-material/Close';
 import { reset } from '../features/chat/chatSlice'
+import { reset as resetMessage } from '../features/message/messageSlice'
 
 export default function ChatContainer(props) {
 
@@ -45,7 +46,7 @@ export default function ChatContainer(props) {
     const handleClose = (e) => {
         e.preventDefault()
         setOpenChat('')
-        dispatch(reset)
+        window.location.reload()
     }
 
     if(isLoading) {

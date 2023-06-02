@@ -15,7 +15,8 @@ export default function ChatMembers(props) {
   const [ removeUsername, setRemoveUsername ] = useState('')
 
 
-  const handleAddMember = () => {
+  const handleAddMember = (e) => {
+    e.preventDefault()
     dispatch(AddGroupMember({ chatId, username }))
   }
 

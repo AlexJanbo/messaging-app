@@ -10,6 +10,7 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: '',
+    users: [],
 }
 
 export const RegisterUser = createAsyncThunk('auth/register', async (user, thunkAPI) => {
@@ -47,6 +48,16 @@ export const ChangeProfilePicture = createAsyncThunk('auth/changeProfilePicture'
     try {
         const token = thunkAPI.getState().auth.user.token
         return await authService.ChangeProfilePicture(userData, token)
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+export const GetAllUsers = createAsyncThunk('auth/getAllUsers', async(_, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token
+        return await authService.GetAllUsers(token)
     } catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
@@ -124,6 +135,20 @@ export const authSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
+            .addCase(GetAllUsers.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(GetAllUsers.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.users = action.payload
+            })
+            .addCase(GetAllUsers.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
     }
 })
 
