@@ -70,6 +70,23 @@ const GetAllUsers = async(token) => {
     return response.data
 }
 
+const QueryUsers = async(searchQuery, token) => {
+
+    const config = {
+        Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.get(API_URL + 'search', {
+        params: {
+            q: searchQuery,
+        },
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    return response.data
+}
+
 const authService = {
     RegisterUser,
     LoginUser,
@@ -78,6 +95,7 @@ const authService = {
     GetUserById,
     ChangeProfilePicture,
     GetAllUsers,
+    QueryUsers,
 }
 
 export default authService

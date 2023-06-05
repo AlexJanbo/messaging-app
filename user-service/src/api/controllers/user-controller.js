@@ -130,6 +130,36 @@ const GetAllUsers = async(req, res) => {
 }
 
 
+//@route    GET /api/users/
+const QueryUsers = async(req, res) => {
+    try {
+        const { user } = req
+        const searchQuery = req.query.q
+        // const pageNumber = parseInt(req.query.pageNumber)
+        // const pageSize = 5
+
+        // const totalItems = await User.countDocuments({ field: searchQuery})
+
+        // const totalPages = Math.ceil(totalItems / pageSIze)
+        const regex = new RegExp(searchQuery, 'i')
+        const users = await User.find({
+            $or: [
+                { username: regex },
+                { email: regex }
+            ]
+        })
+        .find({ _id: { $ne: user._id}})
+        .select('-password')
+        // .skip((pageNumber - 1) * pageSize)
+        // .limit(pageSize)
+
+        res.status(200).json(users)
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+
 module.exports = {
     RegisterUser,
     LoginUser,
@@ -137,4 +167,5 @@ module.exports = {
     GetUserById,
     ChangeProfilePicture,
     GetAllUsers,
+    QueryUsers,
 }

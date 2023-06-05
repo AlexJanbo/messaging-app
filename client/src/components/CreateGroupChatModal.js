@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Grid, TextField } from '@mui/material';
 import defaultAvatar from '../images/default-avatar.png'
 import { CreateChat, reset } from '../features/chat/chatSlice';
+import SearchUsers from './SearchUsers';
 
 const style = {
   position: 'absolute',
@@ -31,9 +32,11 @@ export default function CreateGroupChatModal(props) {
     const [ open, setOpen ] = useState(false);
     const [ chatName, setChatName ] = useState('')
     const [ chatMembers, setChatMembers ] = useState([])
+    const [ userQueryString, setUserQueryString ] = useState('')
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
 
     const handleAddMember = (member) => {
         if(chatMembers.includes(member)) {
@@ -41,6 +44,7 @@ export default function CreateGroupChatModal(props) {
         }
         setChatMembers([...chatMembers, member])
     }
+    console.log(chatMembers)
 
     const handleRemoveMember = (member) => {
         const newChatMembers = chatMembers.filter((user) => user._id !== member._id)
@@ -69,15 +73,16 @@ export default function CreateGroupChatModal(props) {
                     Chat
                 </Typography>
                 <TextField
-                id="chat name"
-                label="Chat name"
-                type="text"
-                name="chatName"
-                value={chatName}
-                onChange={(e) => setChatName(e.target.value)}
-                >
+                    id="chat name"
+                    label="Chat name"
+                    type="text"
+                    name="chatName"
+                    value={chatName}
+                    onChange={(e) => setChatName(e.target.value)}
+                />
+                <SearchUsers handleAddMember={handleAddMember} user={user}/>
+                <Button onClick={() => handleCreateChat()}>Create group chat</Button>
 
-                </TextField>
             </Box>
         </Modal>
         </div>

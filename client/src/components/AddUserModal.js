@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Grid } from '@mui/material';
 import defaultAvatar from '../images/default-avatar.png'
 import { CreateChat, reset } from '../features/chat/chatSlice';
+import AvatarCircle from './AvatarCircle';
 
 const style = {
   position: 'absolute',
@@ -54,14 +55,10 @@ export default function AddUserModal(props) {
             <Typography id="modal-modal-title" variant="h4">
                 Chat
             </Typography>
-            {otherUsers.map((user, index) => {
+            {otherUsers && otherUsers.map((user, index) => {
                 return (
-                    <Grid p={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", maxHeight: "40vh"}}>
-                        <Avatar
-                            display="inline-block"
-                            src={user.image ? user.image : defaultAvatar}
-                            sx={{ height: 24, width: 24}}
-                        />
+                    <Grid p={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", maxHeight: "41vh"}}>
+                        <AvatarCircle image={user.image} />
                         <Typography >{user.username}</Typography>
                         <Button onClick={() => HandleCreateChat(user.username)}>
                             Chat

@@ -35,7 +35,7 @@ function Dashboard() {
       if(openChat) {
         dispatch(GetMessages({ chatId }))
       }
-      dispatch(GetAllUsers())
+      // dispatch(GetAllUsers())
       
       return () => {
           dispatch(reset())
