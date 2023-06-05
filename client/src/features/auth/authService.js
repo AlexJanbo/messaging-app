@@ -35,6 +35,17 @@ const GetUserInformation = async (userData) => {
     return response.data
 }
 
+const GetUserById = async (userId, token) => {
+
+    const config = {
+        Authorization: `Bearer ${token}`
+    }
+
+    const response = await axios.put(API_URL + 'get-user/' + userId, userId, token)
+
+    return response.data
+}
+
 const ChangeProfilePicture = async(userData, token) => {
     
     const config = {
@@ -64,6 +75,7 @@ const authService = {
     LoginUser,
     LogoutUser,
     GetUserInformation,
+    GetUserById,
     ChangeProfilePicture,
     GetAllUsers,
 }

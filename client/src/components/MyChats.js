@@ -7,6 +7,7 @@ import { GetAllUsers, GetUserInformation } from '../features/auth/authSlice';
 import ChatIcon from '@mui/icons-material/Chat';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AddUserModal from './AddUserModal';
+import CreateGroupChatModal from './CreateGroupChatModal';
 
 
 export default function MyChats (props) {
@@ -51,8 +52,9 @@ export default function MyChats (props) {
                     <Typography>No Chats</Typography>
                 </Grid>
                 }
-                <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-end", alignContent: "flex-end", paddingTop: "20px"}}>
+                <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", alignContent: "flex-end", paddingTop: "20px"}}>
                     <AddUserModal user={user} setOpenChat={setOpenChat}/>
+                    <CreateGroupChatModal />
                 </Grid>
             </Grid>
         </Grid>        

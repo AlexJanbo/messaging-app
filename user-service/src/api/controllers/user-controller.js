@@ -81,6 +81,14 @@ const GetUserInformation = async(req, res) => {
         res.status(404).json({ message: error.message })
     }
 }
+
+const GetUserById = async(req, res) => {
+    try {
+        console.log(req.body)
+    } catch (error) {
+        res.status(404).json({ message: error.message})
+    }
+}
  
 
 const ChangeProfilePicture = async(req, res) => {
@@ -126,6 +134,7 @@ module.exports = {
     RegisterUser,
     LoginUser,
     GetUserInformation,
+    GetUserById,
     ChangeProfilePicture,
     GetAllUsers,
 }
