@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Divider, Grid, TextField } from '@mui/material';
 import defaultAvatar from '../images/default-avatar.png'
-import { CreateChat, reset } from '../features/chat/chatSlice';
+import { CreateGroupChat, reset } from '../features/chat/chatSlice';
 import SearchUsers from './SearchUsers';
 
 const style = {
@@ -52,16 +52,15 @@ export default function CreateGroupChatModal(props) {
         }
         setChatMembers([...chatMembers, member])
     }
-    console.log(chatMembers)
 
     const handleRemoveMember = (member) => {
         const newChatMembers = chatMembers.filter((user) => user._id !== member._id)
         setChatMembers([...newChatMembers])
     }
 
-    const handleCreateChat = (memberUsername) => {
+    const handleCreateChat = (memberUsernames) => {
 
-        dispatch(CreateChat({ user, memberUsername }))
+        dispatch(CreateGroupChat({ user, memberUsernames }))
         handleClose()
         dispatch(reset())
     }
@@ -100,7 +99,7 @@ export default function CreateGroupChatModal(props) {
                     </Grid>
                     <Divider />
                     <Grid sx={{display: "flex", justifyContent: "center", width: "100%", borderTop: "1px solid black"}}>
-                        <Button sx={{ color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "5%", marginTop: "5%"}} onClick={() => handleCreateChat()}>Create group chat</Button>
+                        <Button sx={{ color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "5%", marginTop: "5%"}} onClick={() => handleCreateChat(chatMembers)}>Create group chat</Button>
                     </Grid>
                 </Grid>
             </Box>

@@ -35,7 +35,6 @@ const CreateChat = async (req, res) => {
             chatName: `${creator.username} and ${chatMember.username}'s chat`,
             members: [creator, chatMember],
             admin: creator.username,
-            isGroup: false
         })
         res.status(200).json(chat)
 
@@ -43,6 +42,40 @@ const CreateChat = async (req, res) => {
         res.status(404).json({ message: error.message })
     }
 }
+
+const CreateGroupChat = async (req, res) => {
+    try {
+        const { user, memberUsernames } = req.body
+        if(!user) {
+            res.status(401).json({ message: "User not found"})
+        }
+        if(!memberUsernames) {
+            res.status(400).json({ message: "Member username not found"})
+        }
+        const userData = {
+            memberUsernames: memberUsernames
+        }
+        const response = await axios.post('http://localhost:8000/api/users/get-users-from-username-array', userData)
+        const chatMembers = response.data
+        console.log(chatMembers)
+
+        const creator = {
+            _id: user.id,
+            username: user.username,
+            email: user.email,
+        }
+
+        const chat = await Chat.create({
+            chatName: `${creator.username}'s chat`,
+            members: [creator, ...chatMembers],
+            admin: creator.username,
+        })
+        res.status(200).json(chat)
+    } catch (error) {
+        res.status(404).json({ message: error.message})
+    }
+}
+
 
 // @desc Create a one on one chat
 // @route POST /api/chats/create-chat
@@ -258,6 +291,7 @@ const LeaveChat = async (req, res) => {
 
 module.exports = {
     CreateChat,
+    CreateGroupChat,
     GetChat,
     GetAllChats,
     DeleteChat,
