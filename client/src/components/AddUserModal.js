@@ -1,22 +1,25 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Grid } from '@mui/material';
+import { Avatar, Divider, Grid, Stack, TextField } from '@mui/material';
 import defaultAvatar from '../images/default-avatar.png'
 import { CreateChat, reset } from '../features/chat/chatSlice';
 import AvatarCircle from './AvatarCircle';
+import { QueryUsers, reset as resetUsers } from '../features/auth/authSlice';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 500,
+  height: 500,
   bgcolor: 'background.paper',
   border: '2px solid #000',
+  borderRadius: "10%",
   boxShadow: 24,
   p: 4,
 };
@@ -26,13 +29,19 @@ export default function AddUserModal(props) {
 
     const { user, users } = useSelector((state) => state.auth)
 
-    const otherUsers = users.filter((currentUser) => currentUser._id !== user.id)
 
     const dispatch = useDispatch()
 
-    const [open, setOpen] = React.useState(false);
+    const [ searchQuery, setSearchQuery ] = useState('')
+    const [ open, setOpen ] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    useEffect(() => {
+        dispatch(QueryUsers(searchQuery))
+        dispatch(resetUsers())
+    }, [searchQuery])
+
 
     const HandleCreateChat = (memberUsername) => {
 
@@ -44,7 +53,7 @@ export default function AddUserModal(props) {
 
     return (
         <div>
-        <Button onClick={handleOpen}>Create a chat!</Button>
+        <Button onClick={handleOpen}>Add a user to chat!</Button>
         <Modal
             open={open}
             onClose={handleClose}
@@ -52,20 +61,38 @@ export default function AddUserModal(props) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h4">
+            <Typography id="modal-modal-title" variant="h4" sx={{ textAlign: "center", borderBottom: "1px solid black"}}>
                 Chat
             </Typography>
-            {otherUsers && otherUsers.map((user, index) => {
-                return (
-                    <Grid p={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly", alignItems: "center", maxHeight: "41vh"}}>
-                        <AvatarCircle image={user.image} />
-                        <Typography >{user.username}</Typography>
-                        <Button onClick={() => HandleCreateChat(user.username)}>
-                            Chat
-                        </Button>
-                    </Grid>
-                )
-            })}
+            <Grid sx={{ display: "flex", justifyContent: "center", marginTop: "5%"}}>
+                <TextField
+                id="search user"
+                label="Search for a user"
+                type="text"
+                name="searchQuery"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                sx={{ width: "80%"}}
+                />
+            </Grid>
+
+            <Grid sx={{ overflowY: "auto", height: "70%", marginTop: "5%"}}>
+                {users && users.map((user, index) => {
+                    return (
+                        <Grid p={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", maxHeight: "40vh"}}>
+                            <AvatarCircle image={user.image} />
+                            <Stack direction="column" sx={{ width: "60%"}}>
+                                <Typography >{user.username}</Typography>
+                                <Typography >{user.email}</Typography>
+
+                            </Stack>
+                            <Button sx={{color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "10%", '&:hover': { backgroundColor: "#86c48a"}}} onClick={() => HandleCreateChat(user.username)}>
+                                Add
+                            </Button>
+                        </Grid>
+                    )
+                })}
+            </Grid>
             </Box>
         </Modal>
         </div>

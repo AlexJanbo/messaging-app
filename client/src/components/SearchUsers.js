@@ -20,27 +20,30 @@ export default function SearchUsers(props) {
 
   
     return (
-        <Grid>
+        <Grid sx={{ display: "flex", width: "100%", flexDirection: "column", height: 450, justifyContent: "center"}}>
             <TextField
               id="search user"
-              label="Search user"
+              label="Search for a user"
               type="text"
               name="searchQuery"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{ backgroundColor: "#e7e7e7"}}
             />
-            {users && searchQuery.length > 0 && users.map((member, index) => {
-              return (
-                <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", border: "1px solid black"}}>
-                  <AvatarCircle image={member.image} />
-                  <Stack direction="column">
-                    <Typography>Username: {member.username}</Typography>
-                    <Typography>Email: {member.email}</Typography>
-                  </Stack>
-                  <Button onClick={() => handleAddMember(member.username)}>Add</Button>
-                </Grid>
-              )
-            })}
+            <Grid sx={{ height: "60%", overflowY: "auto", marginTop: "10%"}}>
+              {users && users.map((member, index) => {
+                return (
+                  <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", maxHeight: "30vh", padding: 1}}>
+                    <AvatarCircle image={member.image} />
+                    <Stack direction="column" sx={{ width: "60%"}}>
+                      <Typography>{member.username}</Typography>
+                      <Typography>{member.email}</Typography>
+                    </Stack>
+                    <Button onClick={() => handleAddMember(member.username)}>Add</Button>
+                  </Grid>
+                )
+              })}
+            </Grid>
         </Grid>
   )
 }
