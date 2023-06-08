@@ -51,7 +51,6 @@ const StartServer = async () => {
             io.emit('typing', (user))
         })
         socket.on('stop typing', (chatId, user) => {
-            console.log('stopped typing')
             socket.in(chatId).emit('stop typing')
         })
         socket.on('disconnect', () => {

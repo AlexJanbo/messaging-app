@@ -20,7 +20,6 @@ const CreateChat = async (req, res) => {
             username: memberUsername
         }
         const response = await axios.post('http://localhost:8000/api/users/profile', userData)
-        console.log(response)
         const chatMember = response.data
 
         // Sanitizing user information that will be saved to chats
@@ -287,6 +286,34 @@ const LeaveChat = async (req, res) => {
     }
 }
 
+const UpdateLastChatMessage = async (req, res) => {
+
+    try {
+        const { chatId, text, sender } = req.body
+        if(!chatId) {
+            res.status(400).json({ message: "Chat id was not found"})
+        } 
+        if(!text) {
+            res.status(400).json({ message: "Message was not found"})
+        }
+        if(!sender) {
+            res.status(400).json({ message: "Sender username not found"})
+        }
+        const chat = await Chat.findByIdAndUpdate(chatId, {
+            $set: { 
+                lastMessage: {
+                    sender: sender,
+                    text: text
+                }
+            }
+        })
+        
+        res.status(200).json({ message: "Updated last chat message successfully"})
+    } catch (error) {
+        res.status(400).json({ message: error.message})
+    }
+}
+
 
 
 module.exports = {
@@ -300,4 +327,5 @@ module.exports = {
     RemoveGroupMember,
     ChangeChatName,
     ChangeChatAdmin,
+    UpdateLastChatMessage,
 }

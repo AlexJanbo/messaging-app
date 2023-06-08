@@ -9,7 +9,15 @@ const chatSchema = mongoose.Schema({
         username: { type: String},
     }],
     admin: { type: String },
-    lastMessage: { type: String}
+    lastMessage: {
+        sender: {
+            _id: { type: mongoose.Schema.Types.ObjectId },
+            email: { type: String },
+            username: { type: String },
+            image: { type: String },
+        },
+        text: { type: String },
+    }
 
 },
 {

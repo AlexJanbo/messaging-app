@@ -1,10 +1,10 @@
 const Message = require('../../database/models/Message')
+const axios = require('axios')
 
 const SendMessage = async (req, res) => {
 
     try {
         const { sender, text, chatId } = req.body
-        console.log(sender)
         if(!text) {
             throw new Error("Please provide all required message information")
         }
@@ -17,6 +17,19 @@ const SendMessage = async (req, res) => {
             text: text,
             chatId: chatId,
         })
+
+        const data = {
+            chatId: chatId,
+            sender: {
+                _id: sender.id,
+                email: sender.email,
+                username: sender.username,
+                image: sender.image
+            },
+            text: text,
+        }
+
+        const response = await axios.put('http://localhost:8000/api/chats/update-last-chat-message', data)
         
         res.status(200).json({ message })
 

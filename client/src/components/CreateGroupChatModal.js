@@ -72,7 +72,7 @@ export default function CreateGroupChatModal(props) {
 
     return (
         <div>
-        <Button onClick={handleOpen}>Create a group chat!</Button>
+        <Button onClick={handleOpen} sx={{ margin: 3, color: "white", backgroundColor: "black", border: "1px solid black", borderRadius: "5%", '&:hover': { backgroundColor: "#999999"} }}>Create a group chat!</Button>
         <Modal
             open={open}
             onClose={handleClose}
@@ -99,7 +99,7 @@ export default function CreateGroupChatModal(props) {
                     </Grid>
                     <Divider />
                     <Grid sx={{display: "flex", justifyContent: "center", width: "100%", borderTop: "1px solid black"}}>
-                        <Button sx={{ color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "5%", marginTop: "5%"}} onClick={() => handleCreateChat(chatMembers)}>Create group chat</Button>
+                        <Button sx={{ color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "5%", marginTop: "5%", '&:hover': { backgroundColor: "#86c48a"}}} onClick={() => handleCreateChat(chatMembers)}>Create group chat</Button>
                     </Grid>
                 </Grid>
             </Box>

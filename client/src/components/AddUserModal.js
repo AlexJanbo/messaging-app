@@ -53,7 +53,7 @@ export default function AddUserModal(props) {
 
     return (
         <div>
-        <Button onClick={handleOpen}>Add a user to chat!</Button>
+        <Button onClick={handleOpen} sx={{ margin: 3, color: "white", backgroundColor: "black", border: "1px solid black", borderRadius: "5%", '&:hover': { backgroundColor: "#999999"}}}>Add a user to chat!</Button>
         <Modal
             open={open}
             onClose={handleClose}
