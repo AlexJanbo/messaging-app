@@ -28,7 +28,7 @@ export default function ChatMembers(props) {
   }
 
   return (
-    <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#f6f6f6", width: "100%", justifyContent: "center", alignItems: "center" }}>
+    <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
         <Typography>Members</Typography>
         {members.map((member) => {
           return (
@@ -57,6 +57,7 @@ export default function ChatMembers(props) {
                 name="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                sx={{ backgroundColor: "#a9a9a9"}}
                 />
             <Button type="submit" onClick={handleAddMember}>
                 <AddCircleIcon fontSize="large"/>

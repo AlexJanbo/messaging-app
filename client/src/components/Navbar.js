@@ -28,7 +28,7 @@ export default function Navbar(props) {
   return (
     <>
         <AppBar position="static">
-            <Grid sx={{ height: "10vh", width: "100vw", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: "black"}}>
+            <Grid sx={{ height: "10vh", width: "100vw", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", backgroundColor: "#000030"}}>
 
                 <Grid>
                     <Link to={'/dashboard'}>

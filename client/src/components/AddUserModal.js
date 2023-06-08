@@ -17,7 +17,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 500,
   height: 500,
-  bgcolor: 'background.paper',
+  bgcolor: '#676767',
   border: '2px solid #000',
   borderRadius: "10%",
   boxShadow: 24,
@@ -53,7 +53,7 @@ export default function AddUserModal(props) {
 
     return (
         <div>
-        <Button onClick={handleOpen} sx={{ margin: 3, color: "white", backgroundColor: "black", border: "1px solid black", borderRadius: "5%", '&:hover': { backgroundColor: "#999999"}}}>Add a user to chat!</Button>
+        <Button onClick={handleOpen} sx={{ margin: 3, color: "white", backgroundColor: "#676767", border: "1px solid black", borderRadius: "10px", '&:hover': { backgroundColor: "#a9f6ae", color: "black"}}}>Add a user to chat!</Button>
         <Modal
             open={open}
             onClose={handleClose}
@@ -61,7 +61,7 @@ export default function AddUserModal(props) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h4" sx={{ textAlign: "center", borderBottom: "1px solid black"}}>
+            <Typography id="modal-modal-title" variant="h4" sx={{ color: "white", textAlign: "center", borderBottom: "1px solid black"}}>
                 Chat
             </Typography>
             <Grid sx={{ display: "flex", justifyContent: "center", marginTop: "5%"}}>
@@ -72,7 +72,7 @@ export default function AddUserModal(props) {
                 name="searchQuery"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                sx={{ width: "80%"}}
+                sx={{ backgroundColor: "#9C9C9C", width: "80%", borderRadius: "10px"}}
                 />
             </Grid>
 
@@ -81,9 +81,9 @@ export default function AddUserModal(props) {
                     return (
                         <Grid p={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", maxHeight: "40vh"}}>
                             <AvatarCircle image={user.image} />
-                            <Stack direction="column" sx={{ width: "60%"}}>
-                                <Typography >{user.username}</Typography>
-                                <Typography >{user.email}</Typography>
+                            <Stack direction="column" sx={{ width: "70%", backgroundColor: "#9C9C9C", borderRadius: "10px"}}>
+                                <Typography sx={{ padding: "1%"}}>{user.username}</Typography>
+                                <Typography sx={{ padding: "1%"}}>{user.email}</Typography>
 
                             </Stack>
                             <Button sx={{color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "10%", '&:hover': { backgroundColor: "#86c48a"}}} onClick={() => HandleCreateChat(user.username)}>

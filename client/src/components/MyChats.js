@@ -31,38 +31,32 @@ export default function MyChats (props) {
 
     
     return (
-        <Grid sx={{display: "flex", flexDirection: "column", height: "90vh", width: "30vw", border: "2px solid black", margin: "0", boxShadow: "2px"}}>
-            <Grid sx={{display: "flex", height: "10vh", borderBottom: "2px solid black", backgroundColor: "#808080", justifyContent: "center", alignItems: "center"}}>
-                <Typography variant="h4" sx={{ textAlign: "center", color: "white"}}>My Chats</Typography>
+        <Grid sx={{display: "flex", flexDirection: "column", height: "90vh", width: "30vw", margin: "0"}}>
+            <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "flex-end", marginTop: "10vh"}}>
+                <AddUserModal user={user} setOpenChat={setOpenChat}/>
+                <CreateGroupChatModal />
             </Grid>
             <Grid sx={{ display: "flex", flexDirection: "column", height: "60vh", overflowY: "auto", width: "100%"}}>
                 {chats.length > 0 
                 ?
                 chats.map((chat) => {
                     return (
-                        <Grid onClick={() => setOpenChat(chat._id)} key={chat._id} sx={{display: "flex", direction: "row", height: "10vh", justifyContent: "space-between", borderBottom: "1px solid blue", flexShrink: 0}}>
+                        <Grid onClick={() => setOpenChat(chat._id)} key={chat._id} sx={{display: "flex", direction: "row", backgroundColor: "#636363", height: "10vh", justifyContent: "space-between", marginTop: "3vh", marginLeft: "2vw", border: "1px solid black", borderRadius: "10px", flexShrink: 0, '&:hover': { backgroundColor: "#86c48a"}}}>
                             <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: "center", align: "center", width: "80%"}}>
-                                <Typography  variant="h6" sx={{ marginLeft: "5%"}}> {chat.chatName}</Typography>
+                                <Typography  variant="h6" sx={{ color: "white", marginLeft: "5%"}}> {chat.chatName}</Typography>
                                 <Grid sx={{ display: "flex", flexDirection: "row", wrap: "wrap", overflowX: "hidden", marginTop: 1, marginLeft: "5%"}}>
                                     {chat.lastMessage && <AvatarCircle image={chat.lastMessage.sender.image} />}
-                                    {chat.lastMessage && <Typography sx={{ marginLeft: "5%"}}>{chat.lastMessage.text}</Typography> }
+                                    {chat.lastMessage && <Typography sx={{ color: "white", marginLeft: "5%"}}>{chat.lastMessage.text}</Typography> }
                                 </Grid>
                             </Grid>
-                            <Button onClick={() => setOpenChat(chat._id)}>
-                               <ChatIcon />
-                            </Button>
                         </Grid>
                     )
                 })
                 :
                 <Grid sx={{display: "flex", flexDirection: "row", height: "10vh", justifyContent: "center", marginTop: "10px"}}>
-                    <Typography>No Chats</Typography>
+                    <Typography variant="h5" sx={{ color: "white"}}>No Chats</Typography>
                 </Grid>
                 }
-            </Grid>
-            <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "center", alignContent: "flex-end"}}>
-                <AddUserModal user={user} setOpenChat={setOpenChat}/>
-                <CreateGroupChatModal />
             </Grid>
         </Grid>        
     )

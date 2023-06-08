@@ -16,7 +16,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 500,
   borderRadius: "10%",
-  bgcolor: 'background.paper',
+  bgcolor: '#676767',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
@@ -72,7 +72,7 @@ export default function CreateGroupChatModal(props) {
 
     return (
         <div>
-        <Button onClick={handleOpen} sx={{ margin: 3, color: "white", backgroundColor: "black", border: "1px solid black", borderRadius: "5%", '&:hover': { backgroundColor: "#999999"} }}>Create a group chat!</Button>
+        <Button onClick={handleOpen} sx={{ margin: 3, color: "white", backgroundColor: "#676767", border: "1px solid black", borderRadius: "10px", '&:hover': { backgroundColor: "#a9f6ae", color: "black"} }}>Create a group chat!</Button>
         <Modal
             open={open}
             onClose={handleClose}
@@ -82,12 +82,12 @@ export default function CreateGroupChatModal(props) {
             <Box sx={style}>
                 <Grid sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
                     <Grid sx={{ textAlign: "center", width: "100%", borderBottom: "1px solid black"}}>
-                        <Typography id="modal-modal-title" variant="h4" >
+                        <Typography id="modal-modal-title" variant="h4" sx={{ color: "white"}} >
                             Group Chat
                         </Typography>
                     </Grid>
                     <SearchUsers handleAddMember={handleAddMember} user={user}/>
-                    {MembersExist(chatMembers) && <Typography variant="h6" sx={{ textDecoration: "underline"}}>Members</Typography>}
+                    {MembersExist(chatMembers) && <Typography variant="h6" sx={{ color: "white", borderBottom: "1px solid black"}}>Members</Typography>}
                     <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", flexWrap: "wrap"}}>
                         {chatMembers && chatMembers.map((member) => {
                             return (
@@ -99,7 +99,7 @@ export default function CreateGroupChatModal(props) {
                     </Grid>
                     <Divider />
                     <Grid sx={{display: "flex", justifyContent: "center", width: "100%", borderTop: "1px solid black"}}>
-                        <Button sx={{ color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "5%", marginTop: "5%", '&:hover': { backgroundColor: "#86c48a"}}} onClick={() => handleCreateChat(chatMembers)}>Create group chat</Button>
+                        <Button sx={{ color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "10px", marginTop: "5%", '&:hover': { backgroundColor: "#86c48a"}}} onClick={() => handleCreateChat(chatMembers)}>Create group chat</Button>
                     </Grid>
                 </Grid>
             </Box>

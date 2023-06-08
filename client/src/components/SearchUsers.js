@@ -28,18 +28,18 @@ export default function SearchUsers(props) {
               name="searchQuery"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{ backgroundColor: "#e7e7e7"}}
+              sx={{ backgroundColor: "#9C9C9C", borderRadius: "10px"}}
             />
             <Grid sx={{ height: "60%", overflowY: "auto", marginTop: "10%"}}>
               {users && users.map((member, index) => {
                 return (
                   <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", maxHeight: "30vh", padding: 1}}>
                     <AvatarCircle image={member.image} />
-                    <Stack direction="column" sx={{ width: "60%"}}>
-                      <Typography>{member.username}</Typography>
-                      <Typography>{member.email}</Typography>
+                    <Stack direction="column" sx={{ width: "70%", backgroundColor: "#9C9C9C", borderRadius: "10px"}}>
+                      <Typography sx={{ padding: "1%"}}>{member.username}</Typography>
+                      <Typography sx={{ padding: "1%"}}>{member.email}</Typography>
                     </Stack>
-                    <Button onClick={() => handleAddMember(member.username)}>Add</Button>
+                    <Button sx={{ color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "10%", '&:hover': { backgroundColor: "#86c48a" }}} onClick={() => handleAddMember(member.username)}>Add</Button>
                   </Grid>
                 )
               })}

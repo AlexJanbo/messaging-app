@@ -53,7 +53,7 @@ function Dashboard() {
   return (
     <>
 
-        <Paper square sx={{ backgroundColor: "#f9f8fa", height: "100vh"}} >
+        <Paper square sx={{ backgroundColor: "#2B2B2B", height: "100vh"}} >
           <Stack direction="column">
             <Navbar user={user}/>
             <Stack direction="row">

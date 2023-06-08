@@ -38,7 +38,7 @@ export default function ChatSettings(props) {
   }
 
   return (
-    <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#f6f6f6", width: "100%", justifyContent: "center", alignItems: "center" }}>
+    <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
       <Typography>Settings</Typography>
       <Button onClick={handleLeaveChat}>
         Leave chat

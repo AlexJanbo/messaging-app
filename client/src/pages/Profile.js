@@ -9,6 +9,7 @@ import { GetUserById, reset } from '../features/auth/authSlice'
 export default function Profile() {
 
     const { userId } = useParams()
+
     const dispatch = useDispatch()
     const { member } = useSelector((state) => state.auth)
 
@@ -24,13 +25,13 @@ export default function Profile() {
   return (
       <>
 
-        <Paper square sx={{ backgroundColor: "#f9f8fa", height: "100vh"}} >
+        <Paper square sx={{ backgroundColor: "#676767", height: "100vh"}} >
           <Stack direction="column">
-            {/* <Navbar user={user} />
-            <Grid sx={{ display: "flex", justifyContent: "center"}}>
-
+            {/* <Navbar user={user} /> */}
+            
+            {/* <Grid sx={{ display: "flex", justifyContent: "center"}}>
                 <ProfileWindow user={user} />
-            </Grid> */}
+            </Grid>  */}
             {/* <Stack direction="row">
 
             </Stack> */}

@@ -122,34 +122,34 @@ export default function ChatWindow(props) {
 
     return (
         <>
-            <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", backgroundColor: "#f6f6f6", width: "100%" }}>
+            <Grid sx={{ overflowY: "auto", overflowX: "hidden", height: "70vh", width: "100%" }}>
                     <List>
                         {messages.map((message, index) => (
                             message.sender.username === user.username
                             ?
                             <ListItem key={index} sx={{display: "flex", justifyContent: "flex-end"}}>
 
-                                <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word"}}>
-                                    <Typography variant="h5" sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
+                                <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word", marginRight: "1%"}}>
+                                    <Typography variant="h5" sx={{ wordWrap: "break-word", color: "white"}}> {message.text}</Typography>
                                 </Grid>
                                 <Avatar
                                     display="inline-block"
                                     src={user.image ? user.image : defaultAvatar}
                                     alt="Profile Avatar"
-                                    sx={{ height: 24, width: 24}}
+                                    sx={{ height: 24, width: 24, marginRight: "2%"}}
                                 />
                             </ListItem>
                             :
-                            <ListItem key={index} sx={{display: "flex", justifyContent: "flex-start"}}>
+                            <ListItem key={index} sx={{display: "flex", justifyContent: "flex-start", marginLeft: "2%"}}>
                                 <Avatar 
                                     display="inline-block"
                                     src={message.sender.image ? message.sender.image : defaultAvatar}
                                     alt="Profile Avatar"
                                     sx={{ height: 24, width: 24}}
                                 />
-                                <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word"}}>
-                                    <Typography >{message.sender.username}</Typography>
-                                    <Typography variant="h5" sx={{ wordWrap: "break-word"}}> {message.text}</Typography>
+                                <Grid sx={{ display: "inline-block", maxWidth: "60%", wordWrap: "break-word", marginLeft: "1%"}}>
+                                    <Typography sx={{ color: "white", textDecoration: "underline" }}>{message.sender.username}</Typography>
+                                    <Typography variant="h5" sx={{ color: "white", wordWrap: "break-word"}}> {message.text}</Typography>
                                 </Grid>
                             </ListItem>
                             
@@ -165,7 +165,7 @@ export default function ChatWindow(props) {
                             placeholder="Type a message..."
                             value={newMessage}
                             onChange={handleTyping}
-                            sx={{ margin: "5px"}}
+                            sx={{ margin: "5px", backgroundColor: "#a9a9a9"}}
                         />
                         <Button type="submit" onClick={handleSubmitMessage} endIcon={<SendIcon />}/>
                 </Grid>
