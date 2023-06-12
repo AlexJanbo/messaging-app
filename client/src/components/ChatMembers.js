@@ -6,6 +6,8 @@ import { AddGroupMember, RemoveGroupMember } from '../features/chat/chatSlice';
 import RemoveIcon from '@mui/icons-material/Remove';
 import defaultAvatar from '../images/default-avatar.png'
 import { Link } from 'react-router-dom';
+import AvatarCircle from './AvatarCircle';
+import AddUserModal from './AddUserModal';
 
 
 export default function ChatMembers(props) {
@@ -17,10 +19,7 @@ export default function ChatMembers(props) {
   const [ removeUsername, setRemoveUsername ] = useState('')
 
 
-  const handleAddMember = (e) => {
-    e.preventDefault()
-    dispatch(AddGroupMember({ chatId, username }))
-  }
+
 
   const handleRemoveMember = (memberUsername) => {
     dispatch(RemoveGroupMember({ chatId, username: memberUsername}))
@@ -28,44 +27,31 @@ export default function ChatMembers(props) {
   }
 
   return (
-    <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
-        <Typography>Members</Typography>
-        {members.map((member) => {
-          return (
-            <Grid m={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
-              <Avatar
-                  display="inline-block"
-                  src={member.image ? member.image : defaultAvatar}
-                  sx={{ height: 24, width: 24}}
-              />
-              
-              <Typography>{member.username}</Typography>
-              <Link to={`/profile/${member._id}`} >
-                Go to profile
-              </Link>
-              <Button onClick={() => handleRemoveMember(member.username)}>
-                Remove
-              </Button>
-            </Grid>
-          )
-        })}
-          <form>
-            <TextField
-                id="username"
-                label="Add user to chat"
-                type="text"
-                name="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                sx={{ backgroundColor: "#a9a9a9"}}
-                />
-            <Button type="submit" onClick={handleAddMember}>
-                <AddCircleIcon fontSize="large"/>
-            </Button>
-          </form>
-          <Button size="large" onClick={handleShowMessages}>
-            Back to chat
-          </Button>
+    <Grid sx={{display: "flex", flexDirection: "column", maxHeight: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
+        <Grid sx={{ height: "10vh"}}>
+            <AddUserModal chatId={chatId} />
+        </Grid>
+        <Grid sx={{ display: "flex", flexDirection: "column", maxHeight: "60vh", overflowY: "auto", width: "70%"}}>
+          {members.map((member) => {
+            return (
+              <Grid p={2} sx={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", width: "100%"}}>
+                <AvatarCircle image={member.image}/>
+                <Typography sx={{ width: "20%", color: "white"}}>{member.username}</Typography>
+                <Link to={`/profile/${member._id}`} >
+                  <Typography sx={{ color: "white", textDecoration: "underline" }}>
+                    Go to profile
+                  </Typography>
+                </Link>
+                <Button variant="contained" color="error" onClick={() => handleRemoveMember(member.username)}>
+                  Remove
+                </Button>
+              </Grid>
+            )
+          })}
+        </Grid>
+        <Button size="large" sx={{ marginTop: 1, justifyItems: "flex-end", color: "white", width: "100%", height: "10vh", borderTop: "1px solid black"}} onClick={handleShowMessages}>
+          Back to chat
+        </Button>
     </Grid>
   )
 }

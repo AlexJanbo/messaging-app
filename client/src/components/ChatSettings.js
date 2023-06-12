@@ -39,47 +39,45 @@ export default function ChatSettings(props) {
 
   return (
     <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
-      <Typography>Settings</Typography>
-      <Button onClick={handleLeaveChat}>
-        Leave chat
-      </Button>
-      <Button onClick={handleDeleteChat}>
-        Delete chat
-      </Button>
-      <Grid>
+      <Grid sx={{ margin: 1}}>
         <form>
-          <TextField
+          {/* <TextField
               id="newName"
               label="New chat name"
               type="text"
               name="newChat"
               value={newChatName}
               onChange={(e) => setNewChatName(e.target.value)}
-              />
-          <Button type="submit" onClick={handleChangeChatName}>
-              Change!
+              /> */}
+          <Button sx={{ color: "white"}} type="submit" onClick={handleChangeChatName}>
+              Change chat name!
           </Button>
         </form>
       </Grid>
-      <Grid>
+      <Grid sx={{ margin: 1}}>
         <form>
-          <TextField
+          {/* <TextField
             id="newAdmin"
             label="New admin username"
             type="text"
             name="newAdmin"
             value={newAdminUsername}
             onChange={(e) => setNewAdminUsername(e.target.value)}
-          />
-          <Button type="submit" onClick={handleChangeChatAdmin}>
-            Change!
+          /> */}
+          <Button sx={{ color: "white"}} type="submit" onClick={handleChangeChatAdmin}>
+            Change admin!
           </Button>
         </form>
       </Grid>
-      <Button onClick={handleShowMessages}>
-        Back to chat
+      <Button sx={{ margin: 1, color: "gold"}} onClick={handleLeaveChat}>
+        Leave chat
       </Button>
-
+      <Button sx={{ margin: 1, color: "gold"}} onClick={handleDeleteChat}>
+        Delete chat
+      </Button>
+      <Button size="large" sx={{ margin: 1, justifyItems: "flex-end", color: "white", width: "100%", height: "10vh"}} onClick={handleShowMessages}>
+            Back to chat
+      </Button>
     </Grid>
   )
 }

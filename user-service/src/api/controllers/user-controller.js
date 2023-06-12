@@ -64,7 +64,9 @@ const LoginUser = async(req, res) => {
 
 const GetUserInformation = async(req, res) => {
     try {
+        console.log("ping")
         const { username } = req.body
+        console.log(username)
         const user = await FindUserByUsername(req.body.username)
 
         if(!user) {
@@ -84,7 +86,13 @@ const GetUserInformation = async(req, res) => {
 
 const GetUserById = async(req, res) => {
     try {
-        console.log(req.body)
+        const { userId } = req.body
+        if(!userId) {
+            res.status(404).json({ message: "User not found"})
+        }
+
+        const user = await User.findById(userId).select('email username image')
+        res.status(200).json(user)
     } catch (error) {
         res.status(404).json({ message: error.message})
     }

@@ -11,30 +11,31 @@ export default function Profile() {
     const { userId } = useParams()
 
     const dispatch = useDispatch()
-    const { member } = useSelector((state) => state.auth)
+    const { user, profile } = useSelector((state) => state.auth)
+    console.log(profile)
 
-    console.log(useSelector((state) => state.auth))
+
     useEffect(() => {
-      GetUserById({ userId })
 
+      let userData = {
+        userId: userId
+      }
+      dispatch(GetUserById(userData))
       return () => {
         dispatch(reset())
       }
-    })
-    console.log(useParams())
+    }, [])
+
   return (
       <>
 
         <Paper square sx={{ backgroundColor: "#676767", height: "100vh"}} >
           <Stack direction="column">
-            {/* <Navbar user={user} /> */}
+            <Navbar user={user} />
+            <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center"}}>
+              <ProfileWindow user={profile} />
+            </Grid>
             
-            {/* <Grid sx={{ display: "flex", justifyContent: "center"}}>
-                <ProfileWindow user={user} />
-            </Grid>  */}
-            {/* <Stack direction="row">
-
-            </Stack> */}
           </Stack>
         </Paper>
     </>

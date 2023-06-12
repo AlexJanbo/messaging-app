@@ -35,13 +35,13 @@ const GetUserInformation = async (userData) => {
     return response.data
 }
 
-const GetUserById = async (userId, token) => {
+const GetUserById = async (userData, token) => {
 
     const config = {
         Authorization: `Bearer ${token}`
     }
 
-    const response = await axios.put(API_URL + 'get-user/' + userId, userId, token)
+    const response = await axios.put(API_URL + 'get-user-by-id', userData, token)
 
     return response.data
 }

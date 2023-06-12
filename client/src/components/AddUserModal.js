@@ -4,9 +4,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Divider, Grid, Stack, TextField } from '@mui/material';
+import { Avatar, Divider, Grid, Skeleton, Stack, TextField } from '@mui/material';
 import defaultAvatar from '../images/default-avatar.png'
-import { CreateChat, reset } from '../features/chat/chatSlice';
+import { AddGroupMember, CreateChat, reset } from '../features/chat/chatSlice';
 import AvatarCircle from './AvatarCircle';
 import { QueryUsers, reset as resetUsers } from '../features/auth/authSlice';
 
@@ -26,8 +26,8 @@ const style = {
 
 export default function AddUserModal(props) {
 
-
-    const { user, users } = useSelector((state) => state.auth)
+    const { chatId } = props
+    const { user, users, isLoading } = useSelector((state) => state.auth)
 
 
     const dispatch = useDispatch()
@@ -43,17 +43,22 @@ export default function AddUserModal(props) {
     }, [searchQuery])
 
 
-    const HandleCreateChat = (memberUsername) => {
+    const HandleAddGroupMember = (memberUsername) => {
 
-        dispatch(CreateChat({ user, memberUsername }))
+        dispatch(AddGroupMember({ chatId, memberUsername }))
         handleClose()
+        window.location.reload()
         dispatch(reset())
+    }
+
+    if(isLoading) {
+        return <Skeleton />
     }
 
 
     return (
         <div>
-        <Button onClick={handleOpen} sx={{ margin: 3, color: "white", backgroundColor: "#676767", border: "1px solid black", borderRadius: "10px", '&:hover': { backgroundColor: "#a9f6ae", color: "black"}}}>Add a user to chat!</Button>
+        <Button onClick={handleOpen} sx={{ margin: 3, color: "black", backgroundColor: "#a7a7a7", border: "1px solid black", borderRadius: "10px", '&:hover': { backgroundColor: "#a9f6ae", color: "black"}}}>Add a new user!</Button>
         <Modal
             open={open}
             onClose={handleClose}
@@ -61,9 +66,6 @@ export default function AddUserModal(props) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h4" sx={{ color: "white", textAlign: "center", borderBottom: "1px solid black"}}>
-                Chat
-            </Typography>
             <Grid sx={{ display: "flex", justifyContent: "center", marginTop: "5%"}}>
                 <TextField
                 id="search user"
@@ -86,7 +88,7 @@ export default function AddUserModal(props) {
                                 <Typography sx={{ padding: "1%"}}>{user.email}</Typography>
 
                             </Stack>
-                            <Button sx={{color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "10%", '&:hover': { backgroundColor: "#86c48a"}}} onClick={() => HandleCreateChat(user.username)}>
+                            <Button sx={{color: "black", backgroundColor: "#a9f6ae", border: "1px solid black", borderRadius: "10%", '&:hover': { backgroundColor: "#86c48a"}}} onClick={() => HandleAddGroupMember(user.username)}>
                                 Add
                             </Button>
                         </Grid>

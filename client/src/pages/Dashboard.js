@@ -62,7 +62,7 @@ function Dashboard() {
                 <ChatContainer currentChat={currentChat} user={user} chats={chats} openChat={openChat} setOpenChat={selectOpenChat}/>
                 :
                 <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "70vw"}}>
-                  <Typography>Open a chat!</Typography>
+                  <Typography sx={{ color: "white"}}>Open a chat!</Typography>
                 </Grid>
               }
             </Stack>

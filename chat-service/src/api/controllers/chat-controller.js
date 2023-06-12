@@ -56,7 +56,6 @@ const CreateGroupChat = async (req, res) => {
         }
         const response = await axios.post('http://localhost:8000/api/users/get-users-from-username-array', userData)
         const chatMembers = response.data
-        console.log(chatMembers)
 
         const creator = {
             _id: user.id,
@@ -136,28 +135,30 @@ const DeleteChat = async (req, res) => {
 const AddGroupMember = async (req, res) => {
 
     try {
-        const { chatId, username } = req.body
-        if(!chatId || !username) {
-            throw new Error("Chat members not found")
+        const { chatId, memberUsername } = req.body
+        if(!chatId) {
+            res.status(400).json({ message: "Chat id not found"})
+        }
+        if(!memberUsername) {
+            res.status(400).json({ message: "Members username not found"})
         }
 
         const chat = await Chat.findById(chatId)
-        // console.log(chat)
 
         // Get chat member's user object from user microservice since client can not pass that information
         const userData = {
-            username: username
+            username: memberUsername
         }
         const response = await axios.post('http://localhost:8000/api/users/profile', userData)
         const chatMember = response.data
-
+        console.log(chatMember)
 
         // if(chat.members.includes(chatMember)) {
         //     throw new Error("Member already in chat")
         // }
 
         chat.members.push(chatMember)
-        chat.save()
+        await chat.save()
         res.status(200).json({ message: "User successfully added to group"})
 
     } catch (error) {

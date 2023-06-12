@@ -12,7 +12,7 @@ router.route('/profile').post(GetUserInformation)
 router.route('/change-profile-picture').put(ChangeProfilePicture)
 router.route('/get-all-users').get(GetAllUsers)
 router.route('/get-users-from-username-array').post(GetUsersFromUsernameArray)
-router.route('/get-user/:id').put(GetUserById)
+router.route('/get-user-by-id').put(GetUserById)
 router.route('/search').get(Authentication, QueryUsers)
 
 

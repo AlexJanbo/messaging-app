@@ -84,7 +84,7 @@ export default function ChatMenu(props) {
           <ListItemIcon>
             <GroupsIcon sx={{ height: 24, width: 24}} />
           </ListItemIcon>
-          <Button onClick={handleShowMembers}>
+          <Button sx={{ color: "black", textTransform: "none"}} onClick={handleShowMembers}>
              View members
           </Button>
         </MenuItem>
@@ -92,7 +92,7 @@ export default function ChatMenu(props) {
           <ListItemIcon>
             <ManageAccountsIcon /> 
           </ListItemIcon>
-          <Button onClick={handleShowSettings}>
+          <Button sx={{ color: "black", textTransform: "none"}} onClick={handleShowSettings}>
             Chat settings
           </Button>
         </MenuItem>
