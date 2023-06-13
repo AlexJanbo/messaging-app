@@ -176,6 +176,41 @@ const QueryUsers = async(req, res) => {
     }
 }
 
+const CreateNotification = async(req, res) => {
+    try {
+        console.log("ping")
+        const { memberUsernames, chatId, eventType } = req.body
+        if(!memberUsernames) {
+            res.status(200).json({ message: "Member usernames not found"})
+        }
+        if(!chatId) {
+            res.status(200).json({ message: "Chat id not found"})
+        }
+        if(!eventType) {
+            res.status(200).json({ message: "Event type not found"})
+        }
+
+        const notificationData = {
+            read: false,
+            chatId: chatId,
+            event: eventType,
+        }
+
+        const users = await User.updateMany(
+            { username: { $in: memberUsernames }},
+            { $push: { notifications: notificationData}}
+        )
+        res.status(200)
+    } catch (error) {
+        res.status(400).json({ message: error.message})
+    }
+}
+
+// const NotificationRead = async(req, res) => {
+    
+//     const { notificationId } = 
+// }
+
 
 module.exports = {
     RegisterUser,
@@ -186,4 +221,5 @@ module.exports = {
     GetAllUsers,
     GetUsersFromUsernameArray,
     QueryUsers,
+    CreateNotification,
 }

@@ -1,5 +1,5 @@
 const express = require('express')
-const { RegisterUser, LoginUser, GetUserInformation, ChangeProfilePicture, GetAllUsers, GetUserById, QueryUsers, GetUsersFromUsernameArray } = require('../controllers/user-controller')
+const { RegisterUser, LoginUser, GetUserInformation, ChangeProfilePicture, GetAllUsers, GetUserById, QueryUsers, GetUsersFromUsernameArray, CreateNotification } = require('../controllers/user-controller')
 const { Authentication } = require('../middleware/authentication')
 const { LimitLoginAttempts } = require('../middleware/limit-login-attempts')
 
@@ -14,6 +14,7 @@ router.route('/get-all-users').get(GetAllUsers)
 router.route('/get-users-from-username-array').post(GetUsersFromUsernameArray)
 router.route('/get-user-by-id').put(GetUserById)
 router.route('/search').get(Authentication, QueryUsers)
+router.route('/create-notification').post(CreateNotification)
 
 
 module.exports = router

@@ -54,8 +54,8 @@ const CreateGroupChat = async (req, res) => {
         const userData = {
             memberUsernames: memberUsernames
         }
-        const response = await axios.post('http://localhost:8000/api/users/get-users-from-username-array', userData)
-        const chatMembers = response.data
+        const getUserResponse = await axios.post('http://localhost:8000/api/users/get-users-from-username-array', userData)
+        const chatMembers = getUserResponse.data
 
         const creator = {
             _id: user.id,
@@ -68,6 +68,16 @@ const CreateGroupChat = async (req, res) => {
             members: [creator, ...chatMembers],
             admin: creator.username,
         })
+
+        // Send other users notification that they have been invited to a group chat
+        const notificationData = {
+            memberUsernames: memberUsernames,
+            chatId: chat._id,   
+            event: "invited-to-group-chat"
+        }
+        
+        const createNotificationResponse = await axios.post('http://localhost:8000/api/users/create-notification', notificationData)
+
         res.status(200).json(chat)
     } catch (error) {
         res.status(404).json({ message: error.message})
