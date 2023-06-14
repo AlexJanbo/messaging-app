@@ -38,7 +38,10 @@ const userSchema = mongoose.Schema({
             required: true,
             enum: Object.values(eventTypes)
         },
-        timestamp: new Date()
+        timestamp: {
+            type: Date,
+            default: new Date()
+        }
     }]
 },
 {

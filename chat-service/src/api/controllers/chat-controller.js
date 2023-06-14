@@ -51,6 +51,7 @@ const CreateGroupChat = async (req, res) => {
         if(!memberUsernames) {
             res.status(400).json({ message: "Member username not found"})
         }
+
         const userData = {
             memberUsernames: memberUsernames
         }

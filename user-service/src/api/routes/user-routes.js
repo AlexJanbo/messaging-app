@@ -6,15 +6,19 @@ const { LimitLoginAttempts } = require('../middleware/limit-login-attempts')
 const router = express.Router()
 
 
+// API end points called from client
 router.route('/register').post(RegisterUser)
 router.route('/login').post(LimitLoginAttempts, LoginUser)
-router.route('/profile').post(GetUserInformation)
-router.route('/change-profile-picture').put(ChangeProfilePicture)
-router.route('/get-all-users').get(GetAllUsers)
-router.route('/get-users-from-username-array').post(GetUsersFromUsernameArray)
-router.route('/get-user-by-id').put(GetUserById)
+router.route('/change-profile-picture').put(Authentication, ChangeProfilePicture)
+router.route('/get-all-users').get(Authentication, GetAllUsers)
 router.route('/search').get(Authentication, QueryUsers)
-router.route('/create-notification').post(CreateNotification)
 
+
+// API end points called from other services
+// Authentication handled separately
+router.route('/get-users-from-username-array').post(GetUsersFromUsernameArray)
+router.route('/create-notification').post(CreateNotification)
+router.route('/get-user-by-id').put(GetUserById)
+router.route('/profile').post(GetUserInformation)
 
 module.exports = router

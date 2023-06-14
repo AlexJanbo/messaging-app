@@ -29,7 +29,7 @@ export default function ChatMembers(props) {
   return (
     <Grid sx={{display: "flex", flexDirection: "column", maxHeight: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
         <Grid sx={{ height: "10vh"}}>
-            <AddUserModal chatId={chatId} />
+            <AddUserModal chatId={chatId} members={members}/>
         </Grid>
         <Grid sx={{ display: "flex", flexDirection: "column", maxHeight: "60vh", overflowY: "auto", width: "70%"}}>
           {members.map((member) => {

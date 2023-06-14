@@ -26,8 +26,11 @@ const style = {
 
 export default function AddUserModal(props) {
 
-    const { chatId } = props
+    const { chatId, members } = props
     const { user, users, isLoading } = useSelector((state) => state.auth)
+
+    // To make sure user does not try to add users already in the group
+    const filteredUsers = users.filter((user) => !members.some((member) => member.username === user.username))
 
 
     const dispatch = useDispatch()
@@ -79,7 +82,7 @@ export default function AddUserModal(props) {
             </Grid>
 
             <Grid sx={{ overflowY: "auto", height: "70%", marginTop: "5%"}}>
-                {users && users.map((user, index) => {
+                {filteredUsers && filteredUsers.map((user, index) => {
                     return (
                         <Grid p={2} sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", maxHeight: "40vh"}}>
                             <AvatarCircle image={user.image} />

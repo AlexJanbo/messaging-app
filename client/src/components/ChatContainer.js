@@ -60,14 +60,14 @@ export default function ChatContainer(props) {
     return (
         <>
         <Grid sx={{ backgroundColor: "#676767", display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh", overflow: "hidden"}}>
-            <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid black"}}>
+            <Grid sx={{ display: "flex", flexDirection: "row", backgroundColor: "#a7a7a7", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid black"}}>
                 <Grid sx={{ width: "5vw"}}>
                     <Button onClick={handleClose} color="error" m={1} p={1}>
                         <CloseIcon />
                     </Button>
                 </Grid>
                 <Grid >
-                    <Typography variant='h4' align="center" sx={{ color: "white"}}>{currentChat.chatName}</Typography>
+                    <Typography variant='h4' align="center" sx={{ color: "black"}}>{currentChat.chatName}</Typography>
                 </Grid>
                 <Grid >
                     <ChatMenu handleShowMembers={handleShowMembers} handleShowSettings={handleShowSettings}/>

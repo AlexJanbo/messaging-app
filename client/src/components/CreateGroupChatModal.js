@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Divider, Grid, TextField } from '@mui/material';
+import { Avatar, Divider, Grid, Skeleton, TextField } from '@mui/material';
 import defaultAvatar from '../images/default-avatar.png'
 import { CreateGroupChat, reset } from '../features/chat/chatSlice';
 import SearchUsers from './SearchUsers';
@@ -26,7 +26,9 @@ export default function CreateGroupChatModal(props) {
 
 
     const { user, users } = useSelector((state) => state.auth)
+    const { isLoading } = useSelector((state) => state.chat)
 
+    const { setOpenChat } = props
 
     const dispatch = useDispatch()
 
@@ -54,7 +56,7 @@ export default function CreateGroupChatModal(props) {
     }
 
     const handleRemoveMember = (member) => {
-        const newChatMembers = chatMembers.filter((user) => user._id !== member._id)
+        const newChatMembers = chatMembers.filter((user) => user !== member)
         setChatMembers([...newChatMembers])
     }
 
@@ -63,10 +65,19 @@ export default function CreateGroupChatModal(props) {
         dispatch(CreateGroupChat({ user, memberUsernames }))
         handleClose()
         dispatch(reset())
+        window.location.reload()
     }
 
     const MembersExist = (members) => {
         return members.length > 0
+    }
+
+    if(isLoading) {
+        return (
+            <Grid sx={{display: "flex", flexDirection: "column", height: "90vh", width: "30vw", border: "2px solid black", margin: "0", boxShadow: "2px"}}>
+                <Skeleton variant="rectangular" height="100%" width="100%" />
+            </Grid>
+        )
     }
 
 
@@ -91,7 +102,7 @@ export default function CreateGroupChatModal(props) {
                     <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", flexWrap: "wrap"}}>
                         {chatMembers && chatMembers.map((member) => {
                             return (
-                                <Grid sx={{ border: "0.5px solid black", borderRadius: "5%", padding: 1, margin: 1, backgroundColor: "#b5e2ff"}}>
+                                <Grid onClick={() => handleRemoveMember(member)} sx={{ border: "0.5px solid black", borderRadius: "5%", padding: 1, margin: 1, backgroundColor: "#b5e2ff", '&:hover': { backgroundColor: "red"}}}>
                                     <Typography variant="h7">{member}</Typography>
                                 </Grid>
                             )

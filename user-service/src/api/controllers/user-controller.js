@@ -91,7 +91,7 @@ const GetUserById = async(req, res) => {
             res.status(404).json({ message: "User not found"})
         }
 
-        const user = await User.findById(userId).select('email username image')
+        const user = await User.findById(userId).select('-password')
         res.status(200).json(user)
     } catch (error) {
         res.status(404).json({ message: error.message})

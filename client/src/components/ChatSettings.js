@@ -41,14 +41,14 @@ export default function ChatSettings(props) {
     <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
       <Grid sx={{ margin: 1}}>
         <form>
-          {/* <TextField
+          <TextField
               id="newName"
               label="New chat name"
               type="text"
               name="newChat"
               value={newChatName}
               onChange={(e) => setNewChatName(e.target.value)}
-              /> */}
+              />
           <Button sx={{ color: "white"}} type="submit" onClick={handleChangeChatName}>
               Change chat name!
           </Button>
@@ -56,14 +56,14 @@ export default function ChatSettings(props) {
       </Grid>
       <Grid sx={{ margin: 1}}>
         <form>
-          {/* <TextField
+          <TextField
             id="newAdmin"
             label="New admin username"
             type="text"
             name="newAdmin"
             value={newAdminUsername}
             onChange={(e) => setNewAdminUsername(e.target.value)}
-          /> */}
+          />
           <Button sx={{ color: "white"}} type="submit" onClick={handleChangeChatAdmin}>
             Change admin!
           </Button>

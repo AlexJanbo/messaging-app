@@ -33,7 +33,7 @@ export default function MyChats (props) {
     return (
         <Grid sx={{display: "flex", flexDirection: "column", height: "90vh", width: "30vw", margin: "0"}}>
             <Grid sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", alignContent: "flex-end", marginTop: "10vh"}}>
-                <CreateGroupChatModal />
+                <CreateGroupChatModal setOpenChat={setOpenChat} />
             </Grid>
             <Grid sx={{ display: "flex", flexDirection: "column", height: "60vh", overflowY: "auto", width: "100%"}}>
                 {chats.length > 0 
