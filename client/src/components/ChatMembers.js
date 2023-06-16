@@ -14,10 +14,11 @@ export default function ChatMembers(props) {
 
   const dispatch = useDispatch()
 
-  const { chatId, members, handleShowMessages } = props
+  const { user, chatId, members, handleShowMessages } = props
   const [ username, setUsername ] = useState('')
   const [ removeUsername, setRemoveUsername ] = useState('')
 
+  const filteredMembers = members.filter((member) => member._id !== user.id)
 
 
 
@@ -27,12 +28,12 @@ export default function ChatMembers(props) {
   }
 
   return (
-    <Grid sx={{display: "flex", flexDirection: "column", maxHeight: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
+    <Grid sx={{display: "flex", flexDirection: "column", height: "70vh", backgroundColor: "#676767", width: "100%", justifyContent: "center", alignItems: "center" }}>
         <Grid sx={{ height: "10vh"}}>
             <AddUserModal chatId={chatId} members={members}/>
         </Grid>
         <Grid sx={{ display: "flex", flexDirection: "column", maxHeight: "60vh", overflowY: "auto", width: "70%"}}>
-          {members.map((member) => {
+          {filteredMembers.map((member) => {
             return (
               <Grid p={2} sx={{ display: "flex", justifyContent: "space-evenly", alignItems: "center", width: "100%"}}>
                 <AvatarCircle image={member.image}/>
@@ -49,9 +50,11 @@ export default function ChatMembers(props) {
             )
           })}
         </Grid>
-        <Button size="large" sx={{ marginTop: 1, justifyItems: "flex-end", color: "white", width: "100%", height: "10vh", borderTop: "1px solid black"}} onClick={handleShowMessages}>
-          Back to chat
-        </Button>
+        <Grid sx={{ height: "10vh", width: "100%", borderTop: "1px solid black", marginTop: 1}}>
+          <Button size="large" sx={{ justifyItems: "flex-end", color: "white", width: "100%", height: "10vh"}} onClick={handleShowMessages}>
+                Back to chat
+          </Button>
+        </Grid>
     </Grid>
   )
 }

@@ -60,7 +60,7 @@ export default function ChatContainer(props) {
     return (
         <>
         <Grid sx={{ backgroundColor: "#676767", display: "flex", flexDirection: "column", marginTop: "5vh", marginLeft: "5vw", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "60vw", height: "80vh", overflow: "hidden"}}>
-            <Grid sx={{ display: "flex", flexDirection: "row", backgroundColor: "#a7a7a7", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid black"}}>
+            <Grid sx={{ height: "7.5vh", display: "flex", flexDirection: "row", backgroundColor: "#a7a7a7", justifyContent: "space-between", alignItems: "center", borderBottom: "2px solid black"}}>
                 <Grid sx={{ width: "5vw"}}>
                     <Button onClick={handleClose} color="error" m={1} p={1}>
                         <CloseIcon />
@@ -74,8 +74,8 @@ export default function ChatContainer(props) {
                 </Grid>
             </Grid>
             {showMessages && <ChatWindow user={user} previousMessages={previousMessages} openChat={openChat} setOpenChat={setOpenChat} />}
-            {showMembers && <ChatMembers members={currentChat.members} chatId={openChat} handleShowMessages={handleShowMessages}/>}
-            {showSettings && <ChatSettings user={user} chatId={openChat} handleShowMessages={handleShowMessages}/>}
+            {showMembers && <ChatMembers user={user} members={currentChat.members} chatId={openChat} handleShowMessages={handleShowMessages}/>}
+            {showSettings && <ChatSettings user={user} chatId={openChat} handleShowMessages={handleShowMessages} members={currentChat.members}/>}
         </Grid>
            
         </>

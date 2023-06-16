@@ -7,6 +7,7 @@ import PrivateRoute from './components/PrivateRoute'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { lightTheme } from './theme'
 import Profile from './pages/Profile'
+import MyProfile from './pages/MyProfile'
 
 export default function App() {
 
@@ -24,6 +25,13 @@ export default function App() {
                             <PrivateRoute user={user}>
                                 <Dashboard />
                             </PrivateRoute> 
+                        } 
+                    />
+<                   Route exact path='/my-profile'
+                        element={
+                            <PrivateRoute user={user}>
+                                <MyProfile />
+                            </PrivateRoute>
                         } 
                     />
                     <Route exact path='/profile/:userId'

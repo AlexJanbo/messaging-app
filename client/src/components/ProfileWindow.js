@@ -7,7 +7,8 @@ import ProfileInformation from './ProfileInformation';
 
 export default function ProfileWindow(props) {
 
-  const { user } = props
+  const { profile, user } = props
+  console.log(profile)
 
   return (
       <Grid sx={{display: "flex", flexDirection: "column", marginTop: "5vh", border: "2px solid black", borderRadius: "2%", boxShadow: "1px", width: "40vw", height: "60vh", overflow: "hidden"}}>
@@ -17,7 +18,7 @@ export default function ProfileWindow(props) {
                 </Grid>
             </Grid>
             <Grid>
-              <ProfilePicture user={user} />
+              <ProfilePicture profile={profile} />
               <ProfileInformation user={user} />
             </Grid>
     </Grid>

@@ -46,7 +46,7 @@ export default function Navbar(props) {
                     </Toolbar>
                 </Grid>
                 <Grid>
-                    <Link to={`/profile/${user.id}`}>
+                    <Link to={`/my-profile`}>
                         <Typography color="white">
                             Profile
                         </Typography>
